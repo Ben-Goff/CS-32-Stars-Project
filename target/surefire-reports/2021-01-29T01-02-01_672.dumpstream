@@ -1,0 +1,4 @@
+# Created at 2021-01-29T01:02:01.920
+Boot Manifest-JAR contains absolute paths in classpath 'S:\Spring2021\cs32\stars-Ben-Goff\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+

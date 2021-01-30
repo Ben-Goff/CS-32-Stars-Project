@@ -1,0 +1,36 @@
+1. The dataset you created was not bias-free. What are some assumptions that the developers of Mockaroo made about the
+types you explored? Who might be left out of the dataset? Consider the falsehoods you explored earlier.
+
+The Mockaroo developers made many assumptions about the kinds of data explored. First are names. Not only did the
+standard name fields only generate names with the Roman alphabet, they also all started with a capital letter followed
+by non-capital letters. This is a very limited scope of names. Although there was a separate field that I used for
+Chinese alphabet names, I view the fact that these are differentiated from "normal" names to be a large source of bias
+that could affect the usability of this data set. On a more meta level, the idea of having "first name" and "last name"
+fields is an unwise assumption to make. Next are emails. While containing a variety of domains, the emails fall short
+when it comes to the email username. Once again, all are limited to numbers and the Roman alphabet. A more
+domain-specific concern is that they are all of e length that email providers deem sufficient. For example, Google only
+allows usernames better 6 and 30 characters. Thus, it would be interesting for datasets such as these to contain emails
+with usernames outside of that length range. The gender field seems inclusive, although my own lack of education in that
+particular domain adds a bias to my analysis of the dataset.
+
+2. When you made decisions about how you modelled your dataset, you made predictions about what future data you would be
+encountering. How did you make these decisions? Can you think of any edge cases that might break your model?
+
+My foremost decision was the datatypes with which to store the data. I choose to represent all fields as strings. I did
+this to try to limit the restrictions on data I might encounter in the future. I did not want to limit types of physical
+addresses or date and time formats. However, this could be troublesome if the data will be processed in specific ways in
+the future, such as printing out the year of a date and time field. Since I am using strings, one way to break my model
+would be to input a field with more than 2147483647 characters, the max string length. My second important decision was
+how to deal with empty fields. I choose to set those fields to "N/A." Thus, my model would break in the case that
+anyone's name was N/A, or any other field had that exact descriptive value. One way to eliminate this would be to change
+all fields to be an Optional of String, with empty fields being represented by an empty Optional.
+
+3. In this assignment we ask you to build an extensible REPL. How have you made your REPL extensible (beyond accessing
+multiple commands)? Let’s say you wanted to reuse your REPL code. What changes need to be made (if any) to your REPL?
+Consider the inversion-of-control reading and Lecture 2.
+
+I believe that I made my REPL quite extensible. The REPL class itself contains no stars-specific values. Commands can
+be added to REPL objects easily through a method call, and all added command objects must obey a REPLCommand interface.
+Command-specific information, such as command name and argument parsing, is controlled by the specific command classes.
+No changes would have to be made to use my REPL in a similar, yet non stars application. However, domains requiring that
+commands be inputted in a different form may require a reworking of the REPL class and REPLCommand interface.

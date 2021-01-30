@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
+import edu.brown.cs.student.Mock.Mock;
+import edu.brown.cs.student.util.REPL;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import spark.ExceptionHandler;
@@ -15,10 +17,9 @@ import spark.Response;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-
 import com.google.common.collect.ImmutableMap;
-
 import freemarker.template.Configuration;
+
 
 /**
  * The Main class of our project. This is where execution begins.
@@ -34,7 +35,7 @@ public final class Main {
    * @param args
    *          An array of command line arguments
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     new Main(args).run();
   }
 
@@ -44,7 +45,7 @@ public final class Main {
     this.args = args;
   }
 
-  private void run() {
+  private void run() throws IOException {
     // Parse command line arguments
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
@@ -56,7 +57,12 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
 
-    // TODO: Process commands in a REPL
+    REPL commandPrompt = new REPL();
+    commandPrompt.addCommand(new Stars());
+    commandPrompt.addCommand(new NaiveNeighbors());
+    commandPrompt.addCommand(new NaiveRadius());
+    commandPrompt.addCommand(new Mock());
+    commandPrompt.run();
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -80,7 +86,7 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Setup Spark Routes
-    Spark.get("/stars", new FrontHandler(), freeMarker);
+    Spark.get("/edu/brown/cs/student/stars", new FrontHandler(), freeMarker);
   }
 
   /**

@@ -1,0 +1,7 @@
+edu\brown\cs\student\stars\StarTest.class
+edu\brown\cs\student\stars\StarsTest.class
+edu\brown\cs\student\util\CSVParserTest.class
+edu\brown\cs\student\Constants.class
+edu\brown\cs\student\stars\NaiveNeighborsTest.class
+edu\brown\cs\student\stars\NaiveRadiusTest.class
+edu\brown\cs\student\util\REPLTest.class
