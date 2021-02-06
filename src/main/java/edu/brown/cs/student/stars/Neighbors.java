@@ -51,17 +51,22 @@ public class Neighbors implements REPLCommand {
         int firstQuote = argumentString.indexOf("\"");
         int secondQuote = argumentString.lastIndexOf("\"");
         count = Integer.parseInt(argumentString.substring(0, firstQuote - 1).trim());
+        // Throw error if searching for more Stars than are loaded
         if (count > Star.getStarData().size()) {
           throw new RuntimeException("ERROR: " + count
               + " is more than the loaded number of stars (" + Star.getStarData().size() + ")");
         }
         String name = argumentString.substring(firstQuote + 1, secondQuote);
         Star target = Star.getStar(name);
+        //TreeSet cleared and designated to sort by distance to target coordinate
         currentNearest = new TreeSet<>(Comparator.comparingDouble(
             s -> s.distance(target.getX(), target.getY(), target.getZ())));
         currentNearest.clear();
+        //Calls with count + 1 and then removes target after; allowing for reuse of code
         neighbors(currentData, count + 1, target.getX(), target.getY(), target.getZ(), 0);
         currentNearest.remove(target);
+        currentFringe.remove(target);
+        //Combines fringe of farthest, tied values with other near stars to create final list
         int moveFromFringe = count - currentNearest.size();
         Collections.shuffle(currentFringe);
         for (int i = 0; i < moveFromFringe; i++) {
@@ -77,6 +82,7 @@ public class Neighbors implements REPLCommand {
         if (fourParam) {
           String[] arguments = argumentString.trim().split(" +");
           count = Integer.parseInt(Array.get(arguments, 0).toString());
+          // Throw error if searching for more Stars than are loaded
           if (count > Star.getStarData().size()) {
             throw new RuntimeException("ERROR: " + count
                 + " is more than the loaded number of stars (" + Star.getStarData().size() + ")");
@@ -84,8 +90,10 @@ public class Neighbors implements REPLCommand {
           double x = Double.parseDouble(Array.get(arguments, 1).toString());
           double y = Double.parseDouble(Array.get(arguments, 2).toString());
           double z = Double.parseDouble(Array.get(arguments, 3).toString());
+          //TreeSet cleared and designated to sort by distance to target coordinate
           currentNearest = new TreeSet<>(Comparator.comparingDouble(s -> s.distance(x, y, z)));
           neighbors(currentData, count, x, y, z, 0);
+          //Combines fringe of farthest, tied values with other near stars to create final list
           int moveFromFringe = count - currentNearest.size();
           Collections.shuffle(currentFringe);
           for (int i = 0; i < moveFromFringe; i++) {
@@ -96,8 +104,8 @@ public class Neighbors implements REPLCommand {
             System.out.println(Array.get(closeStars, i));
           }
         } else {
-          // Throw error if argumentString doesn't match NaiveNeighbors command regex
-          System.out.println("ERROR: malformed naive_neighbors command");
+          // Throw error if argumentString doesn't match Neighbors command regex
+          System.out.println("ERROR: malformed neighbors command");
         }
       }
     } catch (Exception e) {

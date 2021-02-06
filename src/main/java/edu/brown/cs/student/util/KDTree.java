@@ -15,18 +15,34 @@ public class KDTree {
   private Optional<KDTree> left;
   private Optional<KDTree> right;
 
+  /**
+   * Returns the node of a KDTree.
+   * @return Optional<Coordinate>
+   */
   public Optional<Coordinate> getNode() {
     return node;
   }
 
+  /**
+   * Returns the left side of a KDTree.
+   * @return Optional<KDTree>
+   */
   public Optional<KDTree> getLeft() {
     return left;
   }
 
+  /**
+   * Returns the right side of a KDTree.
+   * @return Optional<KDTree>
+   */
   public Optional<KDTree> getRight() {
     return right;
   }
 
+  /**
+   * Creates a new, empty KDTree of the given dimension.
+   * @param d dimension
+   */
   public KDTree(int d) {
     layer = 0;
     dimension = d;
@@ -34,6 +50,11 @@ public class KDTree {
     left = Optional.empty();
     right = Optional.empty();
   }
+
+  /**
+   * Creates a new KDTree with the given one coordinate.
+   * @param coordinate point at the KDTree root node
+   */
   public KDTree(Coordinate coordinate) {
     layer = 0;
     dimension = coordinate.getCoordinate().size();
@@ -42,6 +63,23 @@ public class KDTree {
     right = Optional.empty();
   }
 
+  /**
+   * Creates a new KDTree with the given one coordinate at the specified root layer.
+   * @param coordinate point at the KDTree root node
+   * @param l layer at which to start construction
+   */
+  public KDTree(Coordinate coordinate, int l) {
+    layer = l;
+    dimension = coordinate.getCoordinate().size();
+    node = Optional.of(coordinate);
+    left = Optional.empty();
+    right = Optional.empty();
+  }
+
+  /**
+   * Creates a new KDTree of the given Coordinates.
+   * @param coordinates ArrayList of Coordinates
+   */
   public KDTree(ArrayList<Coordinate> coordinates) {
     layer = 0;
     if (coordinates.isEmpty()) {
@@ -77,6 +115,12 @@ public class KDTree {
     }
   }
 
+  /**
+   * Creates a new KDTree of the given Coordinates with a specified root layer.
+   * Used primarily to recur from the above constructor.
+   * @param coordinates ArrayList of Coordinates
+   * @param l layer at which to start construction of KDTree
+   */
   public KDTree(ArrayList<Coordinate> coordinates, int l) {
     layer = l;
     dimension = coordinates.get(0).getDimension();
@@ -104,14 +148,10 @@ public class KDTree {
     }
   }
 
-  public KDTree(Coordinate coordinate, int l) {
-    layer = l;
-    dimension = coordinate.getCoordinate().size();
-    node = Optional.of(coordinate);
-    left = Optional.empty();
-    right = Optional.empty();
-  }
-
+  /**
+   * Inserts the given Coordinate into the KDTree.
+   * @param coordinate point to be inserted
+   */
   public void insert(Coordinate coordinate) {
     if (this.node.isEmpty()) {
       this.node = Optional.of(coordinate);
@@ -133,6 +173,12 @@ public class KDTree {
     }
   }
 
+  /**
+   * Inserts the given Coordinate into the KDTree at the given layer.
+   * Used primarily to recur from the above insert method.
+   * @param coordinate point to be inserted
+   * @param l layer at which to insert
+   */
   public void insert(Coordinate coordinate, int l) {
     int index = this.layer % this.dimension;
     if (this.node.isEmpty()) {

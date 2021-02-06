@@ -59,7 +59,7 @@ public class Radius implements REPLCommand {
           System.out.println(Array.get(closeStars, i));
         }
       } else {
-        // Throw error if argumentString doesn't match NaiveRadius command regex
+        // Throw error if argumentString doesn't match Radius command regex
         System.out.println("ERROR: malformed radius command");
       }
     }
