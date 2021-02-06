@@ -2,9 +2,11 @@ edu\brown\cs\student\util\REPL.class
 edu\brown\cs\student\util\KDTree.class
 edu\brown\cs\student\util\CSVParser.class
 edu\brown\cs\student\stars\Neighbors.class
+edu\brown\cs\student\stars\StarInput.class
 edu\brown\cs\student\stars\Main.class
 edu\brown\cs\student\stars\Star.class
 edu\brown\cs\student\stars\Main$FrontHandler.class
 edu\brown\cs\student\stars\Main$ExceptionPrinter.class
 edu\brown\cs\student\stars\Radius.class
 edu\brown\cs\student\util\Coordinate.class
+edu\brown\cs\student\stars\StarsPropertyTester.class

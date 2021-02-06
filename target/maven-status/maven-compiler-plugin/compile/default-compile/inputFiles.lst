@@ -2,12 +2,15 @@ S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\Main.
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\NaiveNeighbors.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\util\Coordinate.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\Mock\Mock.java
+S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\StarInput.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\Star.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\NaiveRadius.java
+S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\Neighbors.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\util\KDTree.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\Radius.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\Mock\MockPerson.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\util\REPLCommand.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\Stars.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\util\REPL.java
+S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\stars\StarsPropertyTester.java
 S:\spring2021\cs32\stars-Ben-Goff\src\main\java\edu\brown\cs\student\util\CSVParser.java
