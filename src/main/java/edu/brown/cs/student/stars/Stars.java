@@ -75,7 +75,6 @@ public class Stars implements REPLCommand {
         lineData = stars.parseLine();
       }
       Star.setStarTree();
-      System.out.println(((Star) Star.getStarTree().getLeft().get().getNode().get()).toString());
       int starCount = Star.getStarData().size();
       System.out.println("Read " + starCount + " stars from " + filename);
     } catch (FileNotFoundException e) {

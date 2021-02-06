@@ -13,11 +13,11 @@ public class NaiveRadius implements REPLCommand {
    * Creates an empty NaiveRadius object.
    */
   public NaiveRadius() {
-  };
+  }
 
   /**
    * Returns the name of the NaiveRadius command "naive_radius".
-   * @return String
+   * @return String "naive_radius"
    */
   @Override
   public String name() {
@@ -26,7 +26,7 @@ public class NaiveRadius implements REPLCommand {
 
   /**
    * Runs the NaiveRadius command with the inputted string containing commands.
-   * @param argumentString
+   * @param argumentString String containing all arguments of NaiveRadius command
    */
   @Override
   public void run(String argumentString) {

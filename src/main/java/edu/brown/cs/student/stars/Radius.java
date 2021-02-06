@@ -14,11 +14,11 @@ public class Radius implements REPLCommand {
    * Creates an empty Radius object.
    */
   public Radius() {
-  };
+  }
 
   /**
    * Returns the name of the Radius command "radius".
-   * @return String
+   * @return String "radius"
    */
   @Override
   public String name() {
@@ -27,7 +27,7 @@ public class Radius implements REPLCommand {
 
   /**
    * Runs the Radius command with the inputted string containing commands.
-   * @param argumentString
+   * @param argumentString String containing all arguments of Radius command
    */
   @Override
   public void run(String argumentString) {

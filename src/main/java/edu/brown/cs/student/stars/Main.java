@@ -63,6 +63,7 @@ public final class Main {
     commandPrompt.addCommand(new NaiveRadius());
     commandPrompt.addCommand(new Mock());
     commandPrompt.addCommand(new Radius());
+    commandPrompt.addCommand(new Neighbors());
     commandPrompt.run();
   }
 

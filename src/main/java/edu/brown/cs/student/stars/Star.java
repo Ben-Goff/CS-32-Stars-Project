@@ -166,7 +166,9 @@ public class Star implements Coordinate {
         withinRadiusRight.add(node);
       }
       return Stream.of(withinRadiusLeft, withinRadiusRight)
-          .flatMap(los -> los.stream()).map(star -> star.starID).toArray(String[]::new);
+          .flatMap(los -> los.stream())
+          .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee)))
+          .map(star -> star.starID).toArray(String[]::new);
     }
   }
 
@@ -193,7 +195,7 @@ public class Star implements Coordinate {
     } else {
       Star node = (Star) tree.get().getNode().get();
       switch (index) {
-        case 1:
+        case 0:
           if (ex - node.x < r) {
             withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
           }
@@ -204,7 +206,7 @@ public class Star implements Coordinate {
             withinRadiusRight.add(node);
           }
           break;
-        case 2:
+        case 1:
           if (why - node.y < r) {
             withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
           }
@@ -215,7 +217,7 @@ public class Star implements Coordinate {
             withinRadiusRight.add(node);
           }
           break;
-        case 3:
+        case 2:
           if (zee - node.z < r) {
             withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
           }
