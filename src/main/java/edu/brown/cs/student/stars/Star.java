@@ -43,6 +43,14 @@ public class Star implements Coordinate {
   }
 
   /**
+   * Returns the current KDTree of parsed Stars.
+   * @return KDTree
+   */
+  public static KDTree getStarTree() {
+    return starTree;
+  }
+
+  /**
    * Returns the X coordinate of the given Star.
    * @return double
    */
@@ -109,6 +117,17 @@ public class Star implements Coordinate {
     z = zee;
   }
 
+  @Override
+  public String toString() {
+    return "Star{"
+        + "starID='" + starID + '\''
+        + ", properName='" + properName + '\''
+        + ", x=" + x
+        + ", y=" + y
+        + ", z=" + z
+        + '}';
+  }
+
   /**
    * Returns if two Stars are equal.
    * @param s
@@ -172,7 +191,7 @@ public class Star implements Coordinate {
     if (tree.isEmpty()) {
       return new ArrayList<>();
     } else {
-      Star node = (Star) starTree.getNode().get();
+      Star node = (Star) tree.get().getNode().get();
       switch (index) {
         case 1:
           if (ex - node.x < r) {
