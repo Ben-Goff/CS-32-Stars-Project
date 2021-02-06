@@ -3,7 +3,9 @@
 ## Stars
 
 KNOWN BUGS:
-- N/A
+- My property based testing sometimes fails, so it has been commented out. I have not been able to determine if I am 
+  not accounting for randomness properly or if I am messing up the comparison between the two sets of results. My code
+  is still in the test files and StarInput class, but the tests have been commented out.
 
 DESIGN DETAILS SPECIFIC TO MY CODE:
 - Commands for REPL each get their own class, implementing REPLCommand interface to ensure functionality

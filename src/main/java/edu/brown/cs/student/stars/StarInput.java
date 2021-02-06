@@ -19,6 +19,54 @@ public class StarInput {
   private String name;
 
   /**
+   * Returns the randomized star data.
+   * @return Vector<Star> star data
+   */
+  public Vector<Star> getStars() {
+    return stars;
+  }
+
+  /**
+   * Returns the randomized count of stars.
+   * @return int star count
+   */
+  public int getCount() {
+    return count;
+  }
+
+  /**
+   * Returns the randomized target x coordinate.
+   * @return double target x coordinate
+   */
+  public double getX() {
+    return x;
+  }
+
+  /**
+   * Returns the randomized target y coordinate.
+   * @return double target y coordinate
+   */
+  public double getY() {
+    return y;
+  }
+
+  /**
+   * Returns the randomized target z coordinate.
+   * @return double target z coordinate
+   */
+  public double getZ() {
+    return z;
+  }
+
+  /**
+   * Returns the randomized target name.
+   * @return String target name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Creates a new StarInput with all fields necessary for Stars commands.
    */
   public StarInput() {

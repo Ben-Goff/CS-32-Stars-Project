@@ -36,6 +36,14 @@ public class Star implements Coordinate {
   }
 
   /**
+   * Returns the current Vector of parsed Stars.
+   * @param data Vector of loaded stars
+   */
+  public static void setStarData(Vector<Star> data) {
+    starData = data;
+  }
+
+  /**
    * Builds the KDTree of Stars based on the loaded StarData.
    */
   public static void setStarTree() {

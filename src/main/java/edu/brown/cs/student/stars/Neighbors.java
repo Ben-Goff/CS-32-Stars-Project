@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,14 @@ public class Neighbors implements REPLCommand {
    * Creates an empty Neighbors object.
    */
   public Neighbors() {
+  }
+
+  public static void setCurrentNearest(TreeSet<Star> cn) {
+    currentNearest = cn;
+  }
+
+  public static void resetCurrentFringe() {
+    currentFringe = new ArrayList<Star>();
   }
 
   /**
@@ -62,19 +71,24 @@ public class Neighbors implements REPLCommand {
         currentNearest = new TreeSet<>(Comparator.comparingDouble(
             s -> s.distance(target.getX(), target.getY(), target.getZ())));
         currentNearest.clear();
-        //Calls with count + 1 and then removes target after; allowing for reuse of code
-        neighbors(currentData, count + 1, target.getX(), target.getY(), target.getZ(), 0);
-        currentNearest.remove(target);
-        currentFringe.remove(target);
-        //Combines fringe of farthest, tied values with other near stars to create final list
-        int moveFromFringe = count - currentNearest.size();
-        Collections.shuffle(currentFringe);
-        for (int i = 0; i < moveFromFringe; i++) {
-          if (!currentFringe.get(i).equals(target)) {
-            currentNearest.add(currentFringe.get(i));
+        //return empty if calling neighbors of named start with only that star loaded
+        if (count == 1 && Star.getStarData().size() == 1) {
+          closeStars = new String[0];
+        } else {
+          //Calls with count + 1 and then removes target after; allowing for reuse of code
+          neighbors(currentData, count + 1, target.getX(), target.getY(), target.getZ(), 0);
+          currentNearest.remove(target);
+          currentFringe.remove(target);
+          //Combines fringe of farthest, tied values with other near stars to create final list
+          int moveFromFringe = count - currentNearest.size();
+          Collections.shuffle(currentFringe);
+          for (int i = 0; i < moveFromFringe; i++) {
+            if (!currentFringe.get(i).equals(target)) {
+              currentNearest.add(currentFringe.get(i));
+            }
           }
+          closeStars = currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
         }
-        closeStars = currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
         for (int i = 0; i < closeStars.length; i++) {
           System.out.println(Array.get(closeStars, i));
         }
@@ -115,6 +129,45 @@ public class Neighbors implements REPLCommand {
 
   /**
    * Returns the iDs of the closest k stars to the input coordinate.
+   * Ties chosen randomly.
+   * @param data
+   * @param k
+   * @param ex
+   * @param why
+   * @param zee
+   * @param l
+   * @param target
+   * @return String[]
+   */
+  public static String[] neighborsWrapper(KDTree data, int k, double ex, double why, double zee,
+                                   int l, Optional<Star> target) {
+    if (target.isPresent()) {
+      //Calls with count + 1 and then removes target after; allowing for reuse of code
+      neighbors(data, k + 1, ex, why, zee, 0);
+      currentNearest.remove(target.get());
+      currentFringe.remove(target.get());
+      //Combines fringe of farthest, tied values with other near stars to create final list
+      int moveFromFringe = k - currentNearest.size();
+      Collections.shuffle(currentFringe);
+      for (int i = 0; i < moveFromFringe; i++) {
+        if (!currentFringe.get(i).equals(target)) {
+          currentNearest.add(currentFringe.get(i));
+        }
+      }
+    } else {
+      neighbors(data, k, ex, why, zee, 0);
+      //Combines fringe of farthest, tied values with other near stars to create final list
+      int moveFromFringe = k - currentNearest.size();
+      Collections.shuffle(currentFringe);
+      for (int i = 0; i < moveFromFringe; i++) {
+        currentNearest.add(currentFringe.get(i));
+      }
+    }
+    return currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
+  }
+
+  /**
+   * Sets the local variables of close neighbors to the inputted coordinates.
    * Ties chosen randomly.
    * @param data
    * @param k
