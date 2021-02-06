@@ -4,5 +4,9 @@ import java.util.ArrayList;
 
 public interface Coordinate {
 
-  public ArrayList<Double> getCoordinate();
+  ArrayList<Double> getCoordinate();
+
+  double getCoordinate(int l);
+
+  int getDimension();
 }

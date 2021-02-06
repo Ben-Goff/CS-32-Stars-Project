@@ -1,18 +1,25 @@
 package edu.brown.cs.student.stars;
+
+import edu.brown.cs.student.util.Coordinate;
+import edu.brown.cs.student.util.KDTree;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Star data structure for storing information of all loaded stars.
  */
-public class Star {
+public class Star implements Coordinate {
 
   private static Vector<Star> starData = new Vector<>();
+  private static KDTree starTree = new KDTree(3);
 
   private String starID;
   private String properName;
@@ -29,6 +36,37 @@ public class Star {
   }
 
   /**
+   * Builds the KDTree of Stars based on the loaded StarData.
+   */
+  public static void setStarTree() {
+    starTree = new KDTree(new ArrayList<>(starData));
+  }
+
+  /**
+   * Returns the X coordinate of the given Star.
+   * @return double
+   */
+  public double getX() {
+    return this.x;
+  }
+
+  /**
+   * Returns the Y coordinate of the given Star.
+   * @return double
+   */
+  public double getY() {
+    return this.y;
+  }
+
+  /**
+   * Returns the Z coordinate of the given Star.
+   * @return double
+   */
+  public double getZ() {
+    return this.z;
+  }
+
+  /**
    * Clears the current Vector of parsed Stars.
    */
   public static void clearStarData() {
@@ -42,6 +80,18 @@ public class Star {
   public static void addStarData(Star s) {
     starData.add(s);
   }
+
+  public ArrayList<Double> getCoordinate() {
+    return new ArrayList<>(Arrays.asList(this.x, this.y, this.z));
+  }
+
+  public double getCoordinate(int l) {
+    return this.getCoordinate().get(l % 3);
+  }
+
+  public int getDimension() {
+    return 3;
+  };
 
   /**
    * Creates a Star object with the inputted iD, name, and coordinate.
@@ -67,6 +117,141 @@ public class Star {
   public boolean equals(Star s) {
     return s.starID.equals(this.starID) && s.properName.equals(this.properName)
         && (s.x == this.x) && (s.y == this.y) && (s.z == this.z);
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from the input coordinate is less than r.
+   * @param r
+   * @param ex
+   * @param why
+   * @param zee
+   * @return ArrayList<Star>
+   */
+  public static String[] radius(double r, double ex, double why, double zee) {
+    int layer = 0;
+    int dimension = 3;
+    int index = layer % dimension;
+    ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+    ArrayList<Star> withinRadiusRight = new ArrayList<>();
+    if (starTree.getNode().isEmpty()) {
+      return new String[0];
+    } else {
+      Star node = (Star) starTree.getNode().get();
+      if (ex - node.x < r) {
+        withinRadiusLeft = radius(starTree.getLeft(), r, ex, why, zee, 1);
+      }
+      if (node.x - ex <= r) {
+        withinRadiusRight = radius(starTree.getRight(), r, ex, why, zee, 1);
+      }
+      if ((node.distance(ex, why, zee) <= r)) {
+        withinRadiusRight.add(node);
+      }
+      return Stream.of(withinRadiusLeft, withinRadiusRight)
+          .flatMap(los -> los.stream()).map(star -> star.starID).toArray(String[]::new);
+    }
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from the input coordinate
+   * is less than r in the given KDTree, slicing on coordinate l.
+   * @param tree
+   * @param r
+   * @param ex
+   * @param why
+   * @param zee
+   * @param l
+   * @return ArrayList<Star>
+   */
+  public static ArrayList<Star> radius(Optional<KDTree> tree, double r,
+                              double ex, double why, double zee, int l) {
+    int layer = l;
+    int dimension = 3;
+    int index = layer % dimension;
+    ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+    ArrayList<Star> withinRadiusRight = new ArrayList<>();
+    if (tree.isEmpty()) {
+      return new ArrayList<>();
+    } else {
+      Star node = (Star) starTree.getNode().get();
+      switch (index) {
+        case 1:
+          if (ex - node.x < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.x - ex <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        case 2:
+          if (why - node.y < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.y - why <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        case 3:
+          if (zee - node.z < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.z - zee <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        default:
+      }
+      return new ArrayList<Star>(Stream.of(withinRadiusLeft, withinRadiusRight)
+          .flatMap(los -> los.stream()).collect(Collectors.toList()));
+    }
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from star with the inputted name is less than r.
+   * @param r
+   * @param name
+   * @return ArrayList<Star>
+   */
+  public static String[] radius(double r, String name) {
+    try {
+      Star target = getStar(name);
+      if (target == null) {
+        throw new RuntimeException("Star not found");
+      }
+      int layer = 0;
+      int dimension = 3;
+      int index = layer % dimension;
+      ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+      ArrayList<Star> withinRadiusRight = new ArrayList<>();
+      if (starTree.getNode().isEmpty()) {
+        return new String[0];
+      } else {
+        Star node = (Star) starTree.getNode().get();
+        if (target.x - node.x < r) {
+          withinRadiusLeft = radius(starTree.getLeft(), r, target.x, target.y, target.z, 1);
+        }
+        if (node.x - target.x <= r) {
+          withinRadiusRight = radius(starTree.getRight(), r, target.x, target.y, target.z, 1);
+        }
+        if ((node.distance(target.x, target.y, target.z) <= r)) {
+          withinRadiusRight.add(node);
+        }
+        return Stream.of(withinRadiusLeft, withinRadiusRight)
+            .flatMap(los -> los.stream()).filter(star -> !star.properName.equals(name))
+            .map(star -> star.starID).toArray(String[]::new);
+      }
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return new String[0];
+    }
   }
 
   /**
@@ -101,6 +286,22 @@ public class Star {
   }
 
   /**
+   * Returns the Star object with the given ProperName.
+   * @param pn
+   * @return Star
+   */
+  public static Star getStar(String pn) {
+    Star coordinate = null;
+    for (Star starDatum : starData) {
+      if (starDatum.properName.equals(pn)) {
+        coordinate = starDatum;
+        break;
+      }
+    }
+    return coordinate;
+  }
+
+  /**
    * Returns the iDs of all Stars whose distance from the Star with properName name is less than r.
    * @param r
    * @param name
@@ -108,13 +309,7 @@ public class Star {
    */
   public static String[] naiveRadius(double r, String name) {
     try {
-      Star coordinate = null;
-      for (Star starDatum : starData) {
-        if (starDatum.properName.equals(name)) {
-          coordinate = starDatum;
-          break;
-        }
-      }
+      Star coordinate = getStar(name);
       if (coordinate == null) {
         throw new RuntimeException("ERROR: Star not found");
       } else {
