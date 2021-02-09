@@ -1,4 +1,5 @@
 edu\brown\cs\student\util\REPL.class
+edu\brown\cs\student\stars\Main$NeighborsHandler.class
 edu\brown\cs\student\util\KDTree.class
 edu\brown\cs\student\util\CSVParser.class
 edu\brown\cs\student\stars\Neighbors.class

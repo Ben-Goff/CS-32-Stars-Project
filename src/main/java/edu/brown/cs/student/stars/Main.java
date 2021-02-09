@@ -12,6 +12,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -88,6 +89,8 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Setup Spark Routes
+    Spark.get("/stars", new FrontHandler(), freeMarker);
+    Spark.get("/neighbors", new NeighborsHandler(), freeMarker);
     Spark.get("/edu/brown/cs/student/stars", new FrontHandler(), freeMarker);
   }
 
@@ -99,7 +102,23 @@ public final class Main {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables = ImmutableMap.of("title",
-          "Stars: Query the database");
+          "STARS: Super Tangible And Real Systems", "results", "");
+      return new ModelAndView(variables, "query.ftl");
+    }
+  }
+
+  /**
+   * Handle requests for Neighbors commands.
+   *
+   */
+  private static class NeighborsHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) throws Exception {
+      Neighbors n = new Neighbors();
+      QueryParamsMap qm = req.queryMap();
+      String textFromTextField = qm.value("text");
+      String result = "yo";
+      Map<String, String> variables = ImmutableMap.of("title", "yo", "results", result);
       return new ModelAndView(variables, "query.ftl");
     }
   }

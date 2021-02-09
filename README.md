@@ -59,3 +59,6 @@ DESIGN QUESTIONS (PART 2):
 
 KNOWN CHECKSTYLE ERRORS:
 - N/A
+
+OUTSIDE RESOURCES USED:
+- I got some ideas for different HTML and CSS designs from https://www.w3schools.com/
