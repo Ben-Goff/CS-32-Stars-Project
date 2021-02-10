@@ -50,7 +50,7 @@ public class StarTest {
   @Test
   public void getZeroStars() {
     reset();
-    String[] output = getCloseStars(Constants.ZERO, tmap);
+    Star[] output = getCloseStars(Constants.ZERO, tmap);
     assertTrue(output.length == Constants.ZERO);
   }
 
@@ -60,7 +60,7 @@ public class StarTest {
   @Test
   public void getAllStars() {
     reset();
-    String[] output = getCloseStars(Constants.NINE, tmap);
+    Star[] output = getCloseStars(Constants.NINE, tmap);
     assertTrue(output.length == Constants.NINE);
   }
 

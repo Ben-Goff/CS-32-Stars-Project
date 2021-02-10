@@ -2,7 +2,6 @@ package edu.brown.cs.student.stars;
 
 import edu.brown.cs.student.util.KDTree;
 import edu.brown.cs.student.util.REPLCommand;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,18 +42,20 @@ public class Neighbors implements REPLCommand {
   /**
    * Runs the Neighbors command with the inputted string containing commands.
    * @param argumentString
+   * @return
    */
   @Override
-  public void run(String argumentString) {
+  public Star[] run(String argumentString) {
     currentFringe = new ArrayList<>();
     currentData = Star.getStarTree();
     try {
-      String[] closeStars;
+      Star[] closeStars;
+      String[] closeIDs;
       boolean twoParam;
       boolean fourParam;
       int count;
-      twoParam = Pattern.matches("(\\s+[A-z0-9-.]+\\s+\"[A-z0-9-.\\s]+\")", argumentString);
-      fourParam = Pattern.matches("(\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
+      twoParam = Pattern.matches("(\\s+[A-z0-9]+\\s+\"[A-z0-9-.\\s]+\")", argumentString);
+      fourParam = Pattern.matches("(\\s+[A-z0-9]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
           argumentString);
       if (twoParam) {
         int firstQuote = argumentString.indexOf("\"");
@@ -71,27 +72,8 @@ public class Neighbors implements REPLCommand {
         currentNearest = new TreeSet<>(Comparator.comparingDouble(
             s -> s.distance(target.getX(), target.getY(), target.getZ())));
         currentNearest.clear();
-        //return empty if calling neighbors of named start with only that star loaded
-        if (count == 1 && Star.getStarData().size() == 1) {
-          closeStars = new String[0];
-        } else {
-          //Calls with count + 1 and then removes target after; allowing for reuse of code
-          neighbors(currentData, count + 1, target.getX(), target.getY(), target.getZ(), 0);
-          currentNearest.remove(target);
-          currentFringe.remove(target);
-          //Combines fringe of farthest, tied values with other near stars to create final list
-          int moveFromFringe = count - currentNearest.size();
-          Collections.shuffle(currentFringe);
-          for (int i = 0; i < moveFromFringe; i++) {
-            if (!currentFringe.get(i).equals(target)) {
-              currentNearest.add(currentFringe.get(i));
-            }
-          }
-          closeStars = currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
-        }
-        for (int i = 0; i < closeStars.length; i++) {
-          System.out.println(Array.get(closeStars, i));
-        }
+        return neighbors(currentData, count, target.getX(), target.getY(), target.getZ(),
+            0, Optional.of(target));
       } else {
         if (fourParam) {
           String[] arguments = argumentString.trim().split(" +");
@@ -106,17 +88,7 @@ public class Neighbors implements REPLCommand {
           double z = Double.parseDouble(Array.get(arguments, 3).toString());
           //TreeSet cleared and designated to sort by distance to target coordinate
           currentNearest = new TreeSet<>(Comparator.comparingDouble(s -> s.distance(x, y, z)));
-          neighbors(currentData, count, x, y, z, 0);
-          //Combines fringe of farthest, tied values with other near stars to create final list
-          int moveFromFringe = count - currentNearest.size();
-          Collections.shuffle(currentFringe);
-          for (int i = 0; i < moveFromFringe; i++) {
-            currentNearest.add(currentFringe.get(i));
-          }
-          closeStars = currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
-          for (int i = 0; i < closeStars.length; i++) {
-            System.out.println(Array.get(closeStars, i));
-          }
+          return neighbors(currentData, count, x, y, z, 0, Optional.empty());
         } else {
           // Throw error if argumentString doesn't match Neighbors command regex
           System.out.println("ERROR: malformed neighbors command");
@@ -125,45 +97,7 @@ public class Neighbors implements REPLCommand {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
-  }
-
-  /**
-   * Returns the iDs of the closest k stars to the input coordinate.
-   * Ties chosen randomly.
-   * @param data
-   * @param k
-   * @param ex
-   * @param why
-   * @param zee
-   * @param l
-   * @param target
-   * @return String[]
-   */
-  public static String[] neighborsWrapper(KDTree data, int k, double ex, double why, double zee,
-                                   int l, Optional<Star> target) {
-    if (target.isPresent()) {
-      //Calls with count + 1 and then removes target after; allowing for reuse of code
-      neighbors(data, k + 1, ex, why, zee, 0);
-      currentNearest.remove(target.get());
-      currentFringe.remove(target.get());
-      //Combines fringe of farthest, tied values with other near stars to create final list
-      int moveFromFringe = k - currentNearest.size();
-      Collections.shuffle(currentFringe);
-      for (int i = 0; i < moveFromFringe; i++) {
-        if (!currentFringe.get(i).equals(target)) {
-          currentNearest.add(currentFringe.get(i));
-        }
-      }
-    } else {
-      neighbors(data, k, ex, why, zee, 0);
-      //Combines fringe of farthest, tied values with other near stars to create final list
-      int moveFromFringe = k - currentNearest.size();
-      Collections.shuffle(currentFringe);
-      for (int i = 0; i < moveFromFringe; i++) {
-        currentNearest.add(currentFringe.get(i));
-      }
-    }
-    return currentNearest.stream().map(s -> s.getStarID()).toArray(String[]::new);
+    return new Star[0];
   }
 
   /**
@@ -175,14 +109,41 @@ public class Neighbors implements REPLCommand {
    * @param why
    * @param zee
    * @param l
+   * @param target
+   * @return Star[]
    */
-  public static void neighbors(KDTree data, int k, double ex, double why, double zee, int l) {
+  public static Star[] neighbors(KDTree data, int k, double ex, double why, double zee,
+                                 int l, Optional<Star> target) {
     int layer = l;
     int dimension = 3;
     int index = layer % dimension;
-    if (data.getNode().isPresent() && k != 0) {
+    if (k == 1 && Star.getStarData().size() == 1 && target.isPresent()) {
+      return new Star[0];
+    }
+    int count;
+    if (target.isPresent()) {
+      count = k + 1;
+    } else {
+      count = k;
+    }
+    neighborSearcher(data, k, ex, why, zee, layer, index, count);
+    if (target.isPresent()) {
+      currentNearest.remove(target.get());
+      currentFringe.remove(target.get());
+    }
+    int moveFromFringe = k - currentNearest.size();
+    Collections.shuffle(currentFringe);
+    for (int i = 0; i < moveFromFringe; i++) {
+      currentNearest.add(currentFringe.get(i));
+    }
+    return currentNearest.toArray(Star[]::new);
+  }
+
+  private static void neighborSearcher(KDTree data, int k, double ex, double why, double zee,
+                                       int layer, int index, int count) {
+    if (data.getNode().isPresent() && count != 0) {
       Star current = (Star) data.getNode().get();
-      if (currentNearest.size() + currentFringe.size() < k) {
+      if (currentNearest.size() + currentFringe.size() < count) {
         if (currentFringe.size() == 0
             || current.distance(ex, why, zee) == currentFringe.get(0).distance(ex, why, zee)) {
           currentFringe.add(current);
@@ -202,7 +163,7 @@ public class Neighbors implements REPLCommand {
           currentFringe.add(current);
         } else {
           if (current.distance(ex, why, zee) < currentFringe.get(0).distance(ex, why, zee)) {
-            if (currentNearest.size() < k - 1) {
+            if (currentNearest.size() < count - 1) {
               currentNearest.add(current);
             } else {
               currentNearest.add(current);
@@ -216,21 +177,21 @@ public class Neighbors implements REPLCommand {
       switch (index) {
         case 0:
           if (currentFringe.get(0).distance(ex, why, zee) > Math.abs(current.getX() - ex)
-              || currentFringe.size() + currentNearest.size() < k) {
+              || currentFringe.size() + currentNearest.size() < count) {
             if (data.getLeft().isPresent()) {
-              neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+              neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
             }
             if (data.getRight().isPresent()) {
-              neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+              neighbors(data.getRight().get(), count, ex, why, zee, layer++);
             }
           } else {
             if (current.getX() <= ex) {
               if (data.getRight().isPresent()) {
-                neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+                neighbors(data.getRight().get(), count, ex, why, zee, layer++);
               }
             } else {
               if (data.getLeft().isPresent()) {
-                neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+                neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
               }
             }
           }
@@ -239,40 +200,40 @@ public class Neighbors implements REPLCommand {
           if (currentFringe.get(0).distance(ex, why, zee) > Math.abs(current.getY() - why)
               || currentFringe.size() + currentNearest.size() < k) {
             if (data.getLeft().isPresent()) {
-              neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+              neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
             }
             if (data.getRight().isPresent()) {
-              neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+              neighbors(data.getRight().get(), count, ex, why, zee, layer++);
             }
           } else {
             if (current.getY() <= why) {
               if (data.getRight().isPresent()) {
-                neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+                neighbors(data.getRight().get(), count, ex, why, zee, layer++);
               }
             } else {
               if (data.getLeft().isPresent()) {
-                neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+                neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
               }
             }
           }
           break;
         case 2:
           if (currentFringe.get(0).distance(ex, why, zee) > Math.abs(current.getZ() - zee)
-              || currentFringe.size() + currentNearest.size() < k) {
+              || currentFringe.size() + currentNearest.size() < count) {
             if (data.getLeft().isPresent()) {
-              neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+              neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
             }
             if (data.getRight().isPresent()) {
-              neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+              neighbors(data.getRight().get(), count, ex, why, zee, layer++);
             }
           } else {
             if (current.getZ() <= zee) {
               if (data.getRight().isPresent()) {
-                neighbors(data.getRight().get(), k, ex, why, zee, layer++);
+                neighbors(data.getRight().get(), count, ex, why, zee, layer++);
               }
             } else {
               if (data.getLeft().isPresent()) {
-                neighbors(data.getLeft().get(), k, ex, why, zee, layer++);
+                neighbors(data.getLeft().get(), count, ex, why, zee, layer++);
               }
             }
           }
@@ -280,5 +241,22 @@ public class Neighbors implements REPLCommand {
         default:
       }
     }
+  }
+
+  /**
+   * Sets the local variables of close neighbors to the inputted coordinates.
+   * Ties chosen randomly.
+   * @param data
+   * @param k
+   * @param ex
+   * @param why
+   * @param zee
+   * @param l
+   */
+  public static void neighbors(KDTree data, int k, double ex, double why, double zee, int l) {
+    int layer = l;
+    int dimension = 3;
+    int index = layer % dimension;
+    neighborSearcher(data, k, ex, why, zee, layer, index, k);
   }
 }

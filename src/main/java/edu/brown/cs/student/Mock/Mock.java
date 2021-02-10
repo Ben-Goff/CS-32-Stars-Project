@@ -1,6 +1,7 @@
 package edu.brown.cs.student.Mock;
 
 import edu.brown.cs.student.Constants;
+import edu.brown.cs.student.stars.Star;
 import edu.brown.cs.student.util.CSVParser;
 import edu.brown.cs.student.util.REPLCommand;
 
@@ -17,7 +18,7 @@ public class Mock implements REPLCommand {
   }
 
   @Override
-  public void run(String argumentString) throws IOException {
+  public Star[] run(String argumentString) throws IOException {
     try {
       CSVParser mock = new CSVParser(argumentString.trim());
       if (!mock.getFirstLine()
@@ -48,5 +49,6 @@ public class Mock implements REPLCommand {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
+    return new Star[0];
   }
 }

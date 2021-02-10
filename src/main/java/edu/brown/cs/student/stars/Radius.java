@@ -28,9 +28,10 @@ public class Radius implements REPLCommand {
   /**
    * Runs the Radius command with the inputted string containing commands.
    * @param argumentString String containing all arguments of Radius command
+   * @return
    */
   @Override
-  public void run(String argumentString) {
+  public Star[] run(String argumentString) {
     String[] closeStars;
     boolean twoParam;
     boolean fourParam;
@@ -43,10 +44,7 @@ public class Radius implements REPLCommand {
       int secondQuote = argumentString.lastIndexOf("\"");
       radius = Double.parseDouble(argumentString.substring(0, firstQuote - 1).trim());
       String name = argumentString.substring(firstQuote + 1, secondQuote);
-      closeStars = Star.radius(radius, name);
-      for (int i = 0; i < closeStars.length; i++) {
-        System.out.println(Array.get(closeStars, i));
-      }
+      return Star.radius(radius, name);
     } else {
       if (fourParam) {
         String[] arguments = argumentString.trim().split(" +");
@@ -54,15 +52,13 @@ public class Radius implements REPLCommand {
         double x = Double.parseDouble(Array.get(arguments, 1).toString());
         double y = Double.parseDouble(Array.get(arguments, 2).toString());
         double z = Double.parseDouble(Array.get(arguments, 3).toString());
-        closeStars = Star.radius(radius, x, y, z);
-        for (int i = 0; i < closeStars.length; i++) {
-          System.out.println(Array.get(closeStars, i));
-        }
+        return Star.radius(radius, x, y, z);
       } else {
         // Throw error if argumentString doesn't match Radius command regex
         System.out.println("ERROR: malformed radius command");
       }
     }
+    return new Star[0];
   }
 
 }

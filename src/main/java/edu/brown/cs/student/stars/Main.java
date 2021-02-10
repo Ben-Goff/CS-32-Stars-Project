@@ -116,9 +116,36 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       Neighbors n = new Neighbors();
       QueryParamsMap qm = req.queryMap();
-      String textFromTextField = qm.value("text");
-      String result = "yo";
-      Map<String, String> variables = ImmutableMap.of("title", "yo", "results", result);
+      String count = qm.value("count");
+      String x = qm.value("x");
+      String y = qm.value("y");
+      String z = qm.value("z");
+      String name = qm.value("name");
+      Star[] results;
+      if (name == null) {
+        results = n.run(" " + count + " " + x + " " + y + " " + z);
+      } else {
+        results = n.run(" " + count + " " + "\"" + name + "\"");
+      }
+      String resultsString = "<table>"
+          + "<tr>"
+          + "<th>Star ID</th>"
+          + "<th>Star Name</th>"
+          + "<th>X</th>"
+          + "<th>Y</th>"
+          + "<th>Z</th>"
+          + "</tr>";
+      for (Star star : results) {
+        resultsString = resultsString + "<tr>"
+            + "<td>" + star.getStarID() + "</td>"
+            + "<td>" + star.getProperName() + "</td>"
+            + "<td>" + star.getX() + "</td>"
+            + "<td>" + star.getY() + "</td>"
+            + "<td>" + star.getZ() + "</td>"
+            + "</tr>";
+      }
+      resultsString = resultsString + "</table>";
+      Map<String, String> variables = ImmutableMap.of("title", "yo", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }

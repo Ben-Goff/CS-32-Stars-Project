@@ -154,14 +154,14 @@ public class Star implements Coordinate {
    * @param zee
    * @return ArrayList<Star>
    */
-  public static String[] radius(double r, double ex, double why, double zee) {
+  public static Star[] radius(double r, double ex, double why, double zee) {
     int layer = 0;
     int dimension = 3;
     int index = layer % dimension;
     ArrayList<Star> withinRadiusLeft = new ArrayList<>();
     ArrayList<Star> withinRadiusRight = new ArrayList<>();
     if (starTree.getNode().isEmpty()) {
-      return new String[0];
+      return new Star[0];
     } else {
       Star node = (Star) starTree.getNode().get();
       if (ex - node.x < r) {
@@ -173,10 +173,8 @@ public class Star implements Coordinate {
       if ((node.distance(ex, why, zee) <= r)) {
         withinRadiusRight.add(node);
       }
-      return Stream.of(withinRadiusLeft, withinRadiusRight)
-          .flatMap(los -> los.stream())
-          .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee)))
-          .map(star -> star.starID).toArray(String[]::new);
+      return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
+          .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee))).toArray(Star[]::new);
     }
   }
 
@@ -249,7 +247,7 @@ public class Star implements Coordinate {
    * @param name
    * @return ArrayList<Star>
    */
-  public static String[] radius(double r, String name) {
+  public static Star[] radius(double r, String name) {
     try {
       Star target = getStar(name);
       if (target == null) {
@@ -261,7 +259,7 @@ public class Star implements Coordinate {
       ArrayList<Star> withinRadiusLeft = new ArrayList<>();
       ArrayList<Star> withinRadiusRight = new ArrayList<>();
       if (starTree.getNode().isEmpty()) {
-        return new String[0];
+        return new Star[0];
       } else {
         Star node = (Star) starTree.getNode().get();
         if (target.x - node.x < r) {
@@ -273,13 +271,12 @@ public class Star implements Coordinate {
         if ((node.distance(target.x, target.y, target.z) <= r)) {
           withinRadiusRight.add(node);
         }
-        return Stream.of(withinRadiusLeft, withinRadiusRight)
-            .flatMap(los -> los.stream()).filter(star -> !star.properName.equals(name))
-            .map(star -> star.starID).toArray(String[]::new);
+        return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
+            .filter(star -> !star.properName.equals(name)).toArray(Star[]::new);
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      return new String[0];
+      return new Star[0];
     }
   }
 
@@ -289,13 +286,12 @@ public class Star implements Coordinate {
    * @param ex
    * @param why
    * @param zee
-   * @return String[]
+   * @return Star[]
    */
-  public static String[] naiveRadius(double r, double ex, double why, double zee) {
+  public static Star[] naiveRadius(double r, double ex, double why, double zee) {
     Stream<Star> starStream = starData.stream()
         .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee)));
-    return starStream.filter(s -> s.distance(ex, why, zee) <= r)
-            .map(star -> star.starID).toArray(String[]::new);
+    return starStream.filter(s -> s.distance(ex, why, zee) <= r).toArray(Star[]::new);
   }
 
   /**
@@ -334,9 +330,9 @@ public class Star implements Coordinate {
    * Returns the iDs of all Stars whose distance from the Star with properName name is less than r.
    * @param r
    * @param name
-   * @return String[]
+   * @return Star[]
    */
-  public static String[] naiveRadius(double r, String name) {
+  public static Star[] naiveRadius(double r, String name) {
     try {
       Star coordinate = getStar(name);
       if (coordinate == null) {
@@ -346,12 +342,11 @@ public class Star implements Coordinate {
         Stream<Star> starStream = starData.stream()
             .sorted(Comparator.comparingDouble(s -> s.distance(finalCoordinate)));
         return starStream.filter(s -> s.distance(finalCoordinate) <= r && !s.starID
-                .equals(finalCoordinate.starID))
-                            .map(star -> star.starID).toArray(String[]::new);
+                .equals(finalCoordinate.starID)).toArray(Star[]::new);
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      return new String[0];
+      return new Star[0];
     }
   }
 
@@ -364,7 +359,7 @@ public class Star implements Coordinate {
    * @param zee
    * @return String[]
    */
-  public static String[] naiveNeighbors(int k, double ex, double why, double zee) {
+  public static Star[] naiveNeighbors(int k, double ex, double why, double zee) {
     if (k > starData.size()) {
       throw new RuntimeException("ERROR: " + k + " is more than the loaded number of stars ("
           + starData.size() + ")");
@@ -391,7 +386,7 @@ public class Star implements Coordinate {
    * @param name
    * @return String[]
    */
-  public static String[] naiveNeighbors(int k, String name) {
+  public static Star[] naiveNeighbors(int k, String name) {
     try {
       Star coordinate = null;
       for (Star starDatum : starData) {
@@ -404,7 +399,7 @@ public class Star implements Coordinate {
         throw new RuntimeException("ERROR: Star not found");
       } else {
         if (k + 1 > starData.size()) {
-          return new String[0];
+          return new Star[0];
         }
         TreeMap<Double, ArrayList<Star>> starDistance = new TreeMap();
         ArrayList<Star> currentValue;
@@ -424,7 +419,7 @@ public class Star implements Coordinate {
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      return new String[0];
+      return new Star[0];
     }
   }
 
@@ -436,8 +431,8 @@ public class Star implements Coordinate {
    * @param starDistance
    * @return String[]
    */
-  public static String[] getCloseStars(int k, TreeMap<Double, ArrayList<Star>> starDistance) {
-    String[] closeStars = new String[k];
+  public static Star[] getCloseStars(int k, TreeMap<Double, ArrayList<Star>> starDistance) {
+    Star[] closeStars = new Star[k];
     int counted = 0;
     int mapStarCount;
     ArrayList<Star> starsAtMap;
@@ -447,12 +442,12 @@ public class Star implements Coordinate {
       if (mapStarCount > k - counted) {
         Collections.shuffle(starsAtMap);
         for (int i = 0; i < k - counted; i++) {
-          Array.set(closeStars, counted + i, starsAtMap.get(i).getStarID());
+          Array.set(closeStars, counted + i, starsAtMap.get(i));
         }
         counted = k;
       } else {
         for (int i = 0; i < mapStarCount; i++) {
-          Array.set(closeStars, counted + i, starsAtMap.get(i).getStarID());
+          Array.set(closeStars, counted + i, starsAtMap.get(i));
         }
         counted += mapStarCount;
       }

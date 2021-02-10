@@ -14,8 +14,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-
-import static edu.brown.cs.student.stars.Neighbors.neighborsWrapper;
 import static edu.brown.cs.student.stars.Neighbors.resetCurrentFringe;
 import static edu.brown.cs.student.stars.Neighbors.setCurrentNearest;
 import static edu.brown.cs.student.stars.Star.naiveNeighbors;

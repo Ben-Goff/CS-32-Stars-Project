@@ -31,9 +31,10 @@ public class Stars implements REPLCommand {
   /**
    * Runs the Stars command with the inputted string containing commands.
    * @param argumentString
+   * @return
    */
   @Override
-  public void run(String argumentString) throws IOException {
+  public Star[] run(String argumentString) throws IOException {
     boolean isFile = Pattern.matches("(\\s+[A-z0-9/-]+.csv\\s*)", argumentString);
     if (isFile) {
       String filename = argumentString.trim();
@@ -42,6 +43,7 @@ public class Stars implements REPLCommand {
       // Throw error if argumentString doesn't match Stars command regex
       System.out.println("ERROR: Malformed stars command");
     }
+    return new Star[0];
   }
 
   /**

@@ -1,5 +1,7 @@
 package edu.brown.cs.student.util;
 
+import edu.brown.cs.student.stars.Star;
+
 import java.io.IOException;
 
 public interface REPLCommand {
@@ -13,7 +15,8 @@ public interface REPLCommand {
   /**
    * Runs the REPL command with the inputted string containing commands.
    * @param argumentString
+   * @return Star[]
    */
-  void run(String argumentString) throws IOException;
+  Star[] run(String argumentString) throws IOException;
 
 }

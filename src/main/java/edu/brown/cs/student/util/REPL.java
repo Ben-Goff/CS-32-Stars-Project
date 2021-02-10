@@ -1,9 +1,12 @@
 package edu.brown.cs.student.util;
 
+import edu.brown.cs.student.stars.Star;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * REPL data structure for storing commands and parsing their parts.
@@ -59,7 +62,11 @@ public class REPL {
         for (int i = 0; i < this.commands.size(); i++) {
           if (this.commands.get(i).name().equals(command)) {
             found = true;
-            this.commands.get(i).run(argumentString);
+            Star[] resultStars = this.commands.get(i).run(argumentString);
+            String[] resultIDs = Arrays.stream(resultStars).map(s -> s.getStarID()).toArray(String[]::new);
+            for (int j = 0; j < resultIDs.length; j++) {
+              System.out.println(Array.get(resultIDs, j));
+            }
           }
         }
         if (!found) {

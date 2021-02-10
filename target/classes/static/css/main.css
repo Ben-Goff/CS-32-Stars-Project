@@ -84,3 +84,25 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.hidden {
+  display: none;
+}
+
+.shown {
+  display: block;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  background-color: #FFC1CC;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 70%;
+  border-collapse: collapse;
+  text-align: left;
+}

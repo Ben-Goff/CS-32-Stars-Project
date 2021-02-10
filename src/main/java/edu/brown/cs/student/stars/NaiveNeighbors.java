@@ -27,9 +27,10 @@ public class NaiveNeighbors implements REPLCommand {
   /**
    * Runs the NaiveNeighbors command with the inputted string containing commands.
    * @param argumentString
+   * @return
    */
   @Override
-  public void run(String argumentString) {
+  public Star[] run(String argumentString) {
     try {
       String[] closeStars;
       boolean twoParam;
@@ -43,10 +44,7 @@ public class NaiveNeighbors implements REPLCommand {
         int secondQuote = argumentString.lastIndexOf("\"");
         count = Integer.parseInt(argumentString.substring(0, firstQuote - 1).trim());
         String name = argumentString.substring(firstQuote + 1, secondQuote);
-        closeStars = Star.naiveNeighbors(count, name);
-        for (int i = 0; i < closeStars.length; i++) {
-          System.out.println(Array.get(closeStars, i));
-        }
+        return Star.naiveNeighbors(count, name);
       } else {
         if (fourParam) {
           String[] arguments = argumentString.trim().split(" +");
@@ -54,10 +52,7 @@ public class NaiveNeighbors implements REPLCommand {
           double x = Double.parseDouble(Array.get(arguments, 1).toString());
           double y = Double.parseDouble(Array.get(arguments, 2).toString());
           double z = Double.parseDouble(Array.get(arguments, 3).toString());
-          closeStars = Star.naiveNeighbors(count, x, y, z);
-          for (int i = 0; i < closeStars.length; i++) {
-            System.out.println(Array.get(closeStars, i));
-          }
+          return Star.naiveNeighbors(count, x, y, z);
         } else {
           // Throw error if argumentString doesn't match NaiveNeighbors command regex
           System.out.println("ERROR: malformed naive_neighbors command");
@@ -66,5 +61,6 @@ public class NaiveNeighbors implements REPLCommand {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
+    return new Star[0];
   }
 }

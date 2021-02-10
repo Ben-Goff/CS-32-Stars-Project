@@ -28,7 +28,7 @@ public class NaiveNeighborsTest {
   @Test
   public void testNoStars() {
     reset();
-    String[] output = Star.naiveNeighbors(0, 0, 0, 0);
+    Star[] output = Star.naiveNeighbors(0, 0, 0, 0);
     assertTrue(output.length == 0);
   }
 
@@ -39,9 +39,9 @@ public class NaiveNeighborsTest {
   public void testAllStars() throws IOException {
     reset();
     Stars.loadData("data/stars/one-star.csv");
-    String[] output = Star.naiveNeighbors(1, 0, 0, 0);
+    Star[] output = Star.naiveNeighbors(1, 0, 0, 0);
     assertTrue(output.length == 1);
-    assertTrue(Array.get(output, 0).equals("1"));
+    assertTrue(((Star) Array.get(output, 0)).getStarID().equals("1"));
     output = Star.naiveNeighbors(0, "Lonely Star");
     assertTrue(output.length == 0);
   }
@@ -62,19 +62,19 @@ public class NaiveNeighborsTest {
   public void testStars() throws IOException {
     reset();
     Stars.loadData("data/stars/ten-star.csv");
-    String[] output = Star.naiveNeighbors(5, -1, -1, -1);
+    Star[] output = Star.naiveNeighbors(5, -1, -1, -1);
     assertTrue(output.length == 5);
-    assertTrue(Arrays.stream(output).anyMatch("0"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("70667"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71454"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71457"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("87666"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("70667"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71454"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
     output = Star.naiveNeighbors(5, "Proxima Centauri");
     assertTrue(output.length == 5);
-    assertTrue(Arrays.stream(output).anyMatch("0"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("118721"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71454"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71457"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("87666"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("118721"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71454"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
   }
 }

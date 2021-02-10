@@ -29,7 +29,7 @@ public class NaiveRadiusTest {
   @Test
   public void testZeroRadius() {
     reset();
-    String[] output = Star.naiveRadius(0, 0, 0, 0);
+    Star[] output = Star.naiveRadius(0, 0, 0, 0);
     assertTrue(output.length == 0);
     output = Star.naiveRadius(0, "S");
     assertTrue(output.length == 0);
@@ -42,9 +42,9 @@ public class NaiveRadiusTest {
   public void testAllStars() throws IOException {
     reset();
     Stars.loadData("data/stars/one-star.csv");
-    String[] output = Star.naiveRadius(Constants.THIRTY, 0, 0, 0);
+    Star[] output = Star.naiveRadius(Constants.THIRTY, 0, 0, 0);
     assertTrue(output.length == 1);
-    assertTrue(Array.get(output, 0).equals("1"));
+    assertTrue(((Star) Array.get(output, 0)).getStarID().equals("1"));
     output = Star.naiveRadius(Constants.THIRTY, "Lonely Star");
     assertTrue(output.length == 0);
   }
@@ -65,20 +65,20 @@ public class NaiveRadiusTest {
   public void testStars() throws IOException {
     reset();
     Stars.loadData("data/stars/ten-star.csv");
-    String[] output = Star.naiveRadius(5, -1, -1, -1);
+    Star[] output = Star.naiveRadius(5, -1, -1, -1);
     assertTrue(output.length == 6);
-    assertTrue(Arrays.stream(output).anyMatch("0"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("70667"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71454"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71457"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("87666"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("118721"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("70667"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71454"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("118721"::equals));
     output = Star.naiveRadius(5, "Proxima Centauri");
     assertTrue(output.length == 5);
-    assertTrue(Arrays.stream(output).anyMatch("0"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("118721"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71454"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("71457"::equals));
-    assertTrue(Arrays.stream(output).anyMatch("87666"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("118721"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71454"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
+    assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
   }
 }
