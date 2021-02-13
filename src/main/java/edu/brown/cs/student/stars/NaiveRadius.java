@@ -49,7 +49,7 @@ public class NaiveRadius implements REPLCommand {
     } else {
       if (fourParam) {
         String[] arguments = argumentString.trim().split(" +");
-        radius = Double.parseDouble(Array.get(arguments, 0).toString());
+        radius = Double.parseDouble(Array.get(arguments, 0).toString().trim());
         double x = Double.parseDouble(Array.get(arguments, 1).toString());
         double y = Double.parseDouble(Array.get(arguments, 2).toString());
         double z = Double.parseDouble(Array.get(arguments, 3).toString());

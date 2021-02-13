@@ -79,6 +79,7 @@ public class Neighbors implements REPLCommand {
           //Queue cleared and designated to sort by distance to target coordinate
           currentNearest = new PriorityQueue<>(Comparator
               .comparingDouble(s -> -1 * s.distance(x, y, z)));
+          currentNearest.clear();
           return neighbors(currentData, count, x, y, z, Optional.empty());
         } else {
           // Throw error if argumentString doesn't match Neighbors command regex

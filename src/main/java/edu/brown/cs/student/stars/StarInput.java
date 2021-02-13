@@ -74,9 +74,9 @@ public class StarInput {
     Vector<Star> listBuilder = new Vector<>();
     for (int i = 0; i < starCount; i++) {
       listBuilder.add(new Star(Integer.toString(i), Integer.toString(i),
-          Math.random() * (Math.random() * FIVE_HUNDRED - TWO_FIFTY),
-          Math.random() * (Math.random() * FIVE_HUNDRED - TWO_FIFTY),
-          Math.random() * (Math.random() * FIVE_HUNDRED - TWO_FIFTY)));
+          (Math.random() * FIVE_HUNDRED - TWO_FIFTY),
+          (Math.random() * FIVE_HUNDRED - TWO_FIFTY),
+          (Math.random() * FIVE_HUNDRED - TWO_FIFTY)));
     }
     stars = listBuilder;
     count = ThreadLocalRandom.current().nextInt(1, starCount + 1);

@@ -136,4 +136,16 @@ public class NaiveNeighborsTest {
     assertTrue(output[3].distance(0, 0, 0) == 5);
     assertTrue(output[4].distance(0, 0, 0) == 5);
   }
+
+  /**
+   ** Tests calling one neighbor.
+   */
+  @Test
+  public void testOneNeighbor() throws IOException {
+    reset();
+    Stars.loadData("data/stars/nineteen-star.csv");
+    Star[] output = naiveNeighbors(1, 128.72790843303667, -55.20516045528934, 140.81526135482198);
+    assertEquals(output.length, 1);
+    assertEquals(output[0].getStarID(), "18");
+  }
 }

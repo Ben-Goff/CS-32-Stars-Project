@@ -91,13 +91,15 @@ public final class Main {
     // Setup Spark Routes
     Spark.get("/stars", new FrontHandler(), freeMarker);
     Spark.get("/load", new LoadStarsHandler(), freeMarker);
+    Spark.get("/naiveneighbors", new NaiveNeighborsHandler(), freeMarker);
+    Spark.get("/naiveradius", new NaiveRadiusHandler(), freeMarker);
     Spark.get("/neighbors", new NeighborsHandler(), freeMarker);
     Spark.get("/radius", new RadiusHandler(), freeMarker);
     Spark.get("/edu/brown/cs/student/stars", new FrontHandler(), freeMarker);
   }
 
   /**
-   * Handle requests for Neighbors commands.
+   * Handle requests for Load commands.
    *
    */
   private static class LoadStarsHandler implements TemplateViewRoute {
@@ -123,13 +125,67 @@ public final class Main {
     @Override
     public ModelAndView handle(Request req, Response res) {
       Map<String, Object> variables = ImmutableMap.of("title",
-          "STARS: Super Tangible And Real Systems", "results", "");
+          "STARS: Super Tangible And Real System", "results", "");
       return new ModelAndView(variables, "query.ftl");
     }
   }
 
   /**
-   * Handle requests for Neighbors commands.
+   * Handle requests for NaiveRadius commands.
+   *
+   */
+  private static class NaiveRadiusHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) throws Exception {
+      NaiveRadius nr = new NaiveRadius();
+      QueryParamsMap qm = req.queryMap();
+      String coordsCount = qm.value("naive-coords-radius");
+      String nameCount = qm.value("naive-name-radius");
+      String x = qm.value("naive-radius-x");
+      String y = qm.value("naive-radius-y");
+      String z = qm.value("naive-radius-z");
+      String name = qm.value("naive-radius-name");
+      Star[] results;
+      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+      System.setOut(new java.io.PrintStream(out));
+      if (name == null) {
+        results = nr.run(" " + coordsCount + " " + x + " " + y + " " + z);
+      } else {
+        results = nr.run(" " + nameCount + " " + "\"" + name + "\"");
+      }
+      System.out.println("yooo");
+      String replOutput = out.toString();
+      String resultsString;
+      if (replOutput.contains("ERROR: ")) {
+        resultsString = replOutput;
+      } else {
+        resultsString = "<table>"
+            + "<tr>"
+            + "<th>Star ID</th>"
+            + "<th>Star Name</th>"
+            + "<th>X</th>"
+            + "<th>Y</th>"
+            + "<th>Z</th>"
+            + "</tr>";
+        for (Star star : results) {
+          resultsString = resultsString + "<tr>"
+              + "<td>" + star.getStarID() + "</td>"
+              + "<td>" + star.getProperName() + "</td>"
+              + "<td>" + star.getX() + "</td>"
+              + "<td>" + star.getY() + "</td>"
+              + "<td>" + star.getZ() + "</td>"
+              + "</tr>";
+        }
+      }
+      resultsString = resultsString + "</table>";
+      Map<String, String> variables = ImmutableMap
+          .of("title", "Naive RADius Results", "results", resultsString);
+      return new ModelAndView(variables, "query.ftl");
+    }
+  }
+
+  /**
+   * Handle requests for Radius commands.
    *
    */
   private static class RadiusHandler implements TemplateViewRoute {
@@ -177,6 +233,59 @@ public final class Main {
       resultsString = resultsString + "</table>";
       Map<String, String> variables = ImmutableMap
           .of("title", "RADius Results", "results", resultsString);
+      return new ModelAndView(variables, "query.ftl");
+    }
+  }
+
+  /**
+   * Handle requests for NaiveNeighbors commands.
+   *
+   */
+  private static class NaiveNeighborsHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) throws Exception {
+      Neighbors nn = new Neighbors();
+      QueryParamsMap qm = req.queryMap();
+      String coordsCount = qm.value("naive-coords-count");
+      String nameCount = qm.value("naive-name-count");
+      String x = qm.value("naive-nearest-x");
+      String y = qm.value("naive-nearest-y");
+      String z = qm.value("naive-nearest-z");
+      String name = qm.value("naive-nearest-name");
+      Star[] results;
+      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+      System.setOut(new java.io.PrintStream(out));
+      if (name == null) {
+        results = nn.run(" " + coordsCount + " " + x + " " + y + " " + z);
+      } else {
+        results = nn.run(" " + nameCount + " " + "\"" + name + "\"");
+      }
+      String replOutput = out.toString();
+      String resultsString;
+      if (replOutput.contains("ERROR: ")) {
+        resultsString = replOutput;
+      } else {
+        resultsString = "<table>"
+            + "<tr>"
+            + "<th>Star ID</th>"
+            + "<th>Star Name</th>"
+            + "<th>X</th>"
+            + "<th>Y</th>"
+            + "<th>Z</th>"
+            + "</tr>";
+        for (Star star : results) {
+          resultsString = resultsString + "<tr>"
+              + "<td>" + star.getStarID() + "</td>"
+              + "<td>" + star.getProperName() + "</td>"
+              + "<td>" + star.getX() + "</td>"
+              + "<td>" + star.getY() + "</td>"
+              + "<td>" + star.getZ() + "</td>"
+              + "</tr>";
+        }
+      }
+      resultsString = resultsString + "</table>";
+      Map<String, String> variables = ImmutableMap
+          .of("title", "Naive Neighbors Results", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }

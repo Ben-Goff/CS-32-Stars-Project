@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class RadiusTest {
 
   private Radius radius = new Radius();
+  private NaiveRadius naiveRadius = new NaiveRadius();
 
   /**
    * * Tests the KDTree implementation against the naive implementation.
@@ -29,23 +30,20 @@ public class RadiusTest {
     boolean correct;
     for (int i = 0; i < Constants.THIRTY; i++) {
       StarInput input = new StarInput();
-      Star.setStarData(input.getStars());
-      Star[] naive = naiveRadius(input.getCount(), input.getX(), input.getY(), input.getZ());
+      Star.clearStarData();
+      for (Star star : input.getStars()) {
+        Star.addStarData(star);
+      }
+      Star.setStarTree();
+      Star[] naive = naiveRadius.run(" " + input.getCount() + " " + input.getX() + " " + input.getY() + " " + input.getZ());
       Double[] naiveStars =
           Arrays.stream(naive).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);
-      Star.setStarTree();
-      resetCurrentFringe();
-      setCurrentNearest(new PriorityQueue<>(Comparator.comparingDouble(
-          s -> -1 * s.distance(input.getX(), input.getY(), input.getZ()))));
-      Star[] smart = radius(input.getCount(),
-          input.getX(), input.getY(), input.getZ());
+      Star[] smart = radius.run(" " + input.getCount() + " " + input.getX() + " " + input.getY() + " " + input.getZ());
       Double[] smartStars =
           Arrays.stream(smart).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);
       correct = true;
-      Stars.ppp(input.getCount() + "b" + smartStars.length + " " + naiveStars.length);
-      Stars.ppp("c" + smartStars[smartStars.length - 1] + " " + naiveStars[naiveStars.length - 1]);
       for (int j = 0; j < smartStars.length; j++) {
         if (Math.abs(smartStars[j] - naiveStars[j]) > Constants.ALMOST_ZERO) {
           correct = false;
@@ -55,7 +53,6 @@ public class RadiusTest {
     }
   }
    */
-
   /**
    * Resets the Radius object.
    */

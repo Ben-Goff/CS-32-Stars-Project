@@ -1,7 +1,6 @@
 package edu.brown.cs.student.stars;
 
 import edu.brown.cs.student.Constants;
-import edu.brown.cs.student.util.KDTree;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.IOException;
@@ -14,13 +13,14 @@ import java.util.PriorityQueue;
 import static edu.brown.cs.student.stars.Neighbors.neighbors;
 import static edu.brown.cs.student.stars.Neighbors.resetCurrentFringe;
 import static edu.brown.cs.student.stars.Neighbors.setCurrentNearest;
-import static edu.brown.cs.student.stars.NaiveNeighbors.naiveNeighbors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class NeighborsTest {
 
-  private Neighbors n = new Neighbors();
+  private NaiveNeighbors naiveNeighbors = new NaiveNeighbors();
+  private Neighbors neighbors = new Neighbors();
+  private Stars stars = new Stars();
 
   /**
    ** Tests the KDTree implementation against the naive implementation.
@@ -30,17 +30,18 @@ public class NeighborsTest {
     boolean correct;
     for (int i = 0; i < Constants.THIRTY; i++) {
       StarInput input = new StarInput();
-      Star.setStarData(input.getStars());
-      Star[] naive = naiveNeighbors(input.getCount(), input.getX(), input.getY(), input.getZ());
+      Star.clearStarData();
+      for (Star star : input.getStars()) {
+        Star.addStarData(star);
+      }
+      Star.setStarTree();
+      Star[] naive = naiveNeighbors.run(" " + input.getCount() + " " + input.getX()
+          + " " + input.getY() + " " + input.getZ());
       Double[] naiveStars =
           Arrays.stream(naive).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);
-      Star.setStarTree();
-      resetCurrentFringe();
-      setCurrentNearest(new PriorityQueue<>(Comparator.comparingDouble(
-          s -> -1 * s.distance(input.getX(), input.getY(), input.getZ()))));
-      Star[] smart = neighbors(Star.getStarTree(), input.getCount(),
-          input.getX(), input.getY(), input.getZ(), Optional.empty());
+      Star[] smart = neighbors.run(" " + input.getCount() + " " + input.getX()
+          + " " + input.getY() + " " + input.getZ());
       Double[] smartStars =
           Arrays.stream(smart).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);
@@ -49,6 +50,15 @@ public class NeighborsTest {
         if (Math.abs(smartStars[j] - naiveStars[j]) > Constants.ALMOST_ZERO) {
           correct = false;
         }
+      }
+      if (!correct) {
+        for (int k = 0; k < input.getStars().size(); k++) {
+          System.out.println(input.getStars().get(k).toString());
+        }
+        System.out.println("count: " + input.getCount());
+        System.out.println("x: " + input.getX());
+        System.out.println("y: " + input.getY());
+        System.out.println("z: " + input.getZ());
       }
       assertTrue(correct);
     }
@@ -163,7 +173,7 @@ public class NeighborsTest {
   @Test
   public void testName() {
     reset();
-    assertTrue(n.name().equals("neighbors"));
+    assertTrue(neighbors.name().equals("neighbors"));
   }
 
   /**
@@ -225,4 +235,18 @@ public class NeighborsTest {
     assertTrue(output[3].distance(0, 0, 0) == 5);
     assertTrue(output[4].distance(0, 0, 0) == 5);
   }
+
+  /**
+   ** Tests calling one neighbor.
+
+  @Test
+  public void testOneNeighbor() throws IOException {
+    reset();
+    stars.run(" data/stars/nineteen-star.csv");
+    Star[] output = neighbors.run(" 1 128.72790843303667 -55.20516045528934 140.81526135482198");
+    System.out.println("yooooo" + ((Star) Star.getStarTree().getRight().get().getNode().get()).getStarID());
+    assertEquals(output.length, 1);
+    assertEquals(output[0].getStarID(), "18");
+  }
+   */
 }

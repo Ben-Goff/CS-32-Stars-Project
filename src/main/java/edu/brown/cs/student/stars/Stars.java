@@ -46,10 +46,6 @@ public class Stars implements REPLCommand {
     return new Star[0];
   }
 
-  public static void ppp(String s) {
-    System.out.println(s);
-  }
-
   /**
    * Parses all Stars from the inputted file, loading them into StarData.
    * @param filename
