@@ -1,6 +1,6 @@
 <#assign content>
 
-<h1> STARS: Super Tangible And Real System </h1>
+<h1 class="centered"> STARS: Super Tangible And Real System </h1> <br>
   <label id="tab-label">First, choose your function!</label>
 <label id="input-label" for="text">Then, input your data!</label>
 <label id="results-label" for="text">Finally, see the results!</label>
@@ -16,8 +16,8 @@
     <form id="load" method="GET" action="/load" class="left">
       <label for="text">1: Enter the Path to the .csv File Containing Star Data</label><br>
       <label for="path">Path: </label><br>
-      <input id="path" name="path"> <br>
-    <button id="load-stars"> Search </button>
+      <input id="path" name="path"> <br> <br>
+    <button id="load-stars"> Load </button>
   </form>
 </div>
 
@@ -38,14 +38,14 @@
   <label for="y">Y Coordinate: </label><br>
   <input id="y" name="y"> <br>
   <label for="z">Z Coordinate: </label><br>
-  <input id="z" name="z"> <br>
+  <input id="z" name="z"> <br> <br>
   <button id="compute-nearest-coords"> Search </button>
 </form>
 <form style="display:none" id="nearest-name" method="GET" action="/neighbors" class="left">
   <label for="count">Count: </label><br>
   <input id="count" name="count"> <br>
   <label for="name">Star Name: </label><br>
-  <input id="name" name="name" id="name"> <br>
+  <input id="name" name="name" id="name"> <br> <br>
   <button id="compute-nearest-name"> Search </button>
 </form>
 </div>
@@ -67,20 +67,20 @@
     <label for="y">Y Coordinate: </label><br>
     <input id="y" name="y"> <br>
     <label for="z">Z Coordinate: </label><br>
-    <input id="z" name="z"> <br>
+    <input id="z" name="z"> <br> <br>
     <button id="compute-radius-coords"> Search </button>
   </form>
   <form style="display:none" id="radius-name" method="GET" action="/radius" class="left">
     <label for="radius">Radius: </label><br>
     <input id="radius" name="radius"> <br>
     <label for="name">Star Name: </label><br>
-    <input id="name" name="name" id="name"> <br>
+    <input id="name" name="name" id="name"> <br> <br>
     <button id="compute-radius-name"> Search </button>
   </form>
 </div>
 
-<div id="results"> Results <br>
-  <p class="centered"> ${results} </p>
+<div id="results"> Results: <br>
+  <p class="left"> ${results} </p>
 </div>
 
 

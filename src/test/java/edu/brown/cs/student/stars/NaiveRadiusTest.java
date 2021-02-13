@@ -3,7 +3,6 @@ package edu.brown.cs.student.stars;
 import edu.brown.cs.student.Constants;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -28,11 +27,26 @@ public class NaiveRadiusTest {
    ** Tests calling radius 0.
    */
   @Test
-  public void testZeroRadius() {
+  public void testZeroRadius() throws IOException {
     reset();
+    Stars.loadData("data/stars/ten-star.csv");
     Star[] output = naiveRadius(0, 0, 0, 0);
+    assertTrue(output.length == 1);
+    output = naiveRadius(0, "Sol");
     assertTrue(output.length == 0);
-    output = naiveRadius(0, "S");
+  }
+
+  /**
+   ** Tests no stars in radius.
+   */
+  @Test
+  public void testNoneInRadius() throws IOException {
+    reset();
+    Stars.loadData("data/stars/stardata.csv");
+    Star[] output = naiveRadius(Constants.ALMOST_ZERO, Constants.ONEONENINESIXONESEVEN,
+        Constants.ONEONENINESIXONESEVEN, Constants.ONEONENINESIXONESEVEN);
+    assertTrue(output.length == 0);
+    output = naiveRadius(Constants.ALMOST_ZERO, "Cyntha");
     assertTrue(output.length == 0);
   }
 
@@ -82,4 +96,30 @@ public class NaiveRadiusTest {
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
   }
+
+  /**
+   ** Tests calling more stars than number of loaded stars.
+   */
+  @Test
+  public void testOverloading() throws IOException {
+    reset();
+    Stars.loadData("data/stars/one-star.csv");
+    try {
+      naiveRadius(Constants.TEN, 0, 0, 0);
+    } catch (Exception e) {
+      assertTrue(true);
+    }
+  }
+
+  /**
+   ** Tests star on edge of radius to make sure it is included.
+   */
+  @Test
+  public void testFringeStar() throws IOException {
+    reset();
+    Stars.loadData("data/stars/ten-star.csv");
+    Star[] output = naiveRadius(Constants.FIVE, 0, 3, 4);
+    assertTrue(output[1].getProperName().equals("Sol"));
+  }
 }
+

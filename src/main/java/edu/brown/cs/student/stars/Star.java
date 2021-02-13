@@ -2,14 +2,9 @@ package edu.brown.cs.student.stars;
 
 import edu.brown.cs.student.util.Coordinate;
 import edu.brown.cs.student.util.KDTree;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.TreeMap;
 import java.util.Vector;
-import java.util.stream.Stream;
 
 /**
  * Star data structure for storing information of all loaded stars.

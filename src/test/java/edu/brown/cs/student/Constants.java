@@ -25,4 +25,7 @@ public abstract class Constants {
   public static final double PROXIMA_CENTAURI_X = -0.47175;
   public static final double PROXIMA_CENTAURI_Y = -0.36132;
   public static final double PROXIMA_CENTAURI_Z = -1.15037;
+  public static final double CYNTHA_X = 671.91057;
+  public static final double CYNTHA_Y = 138.81144;
+  public static final double CYNTHA_Z = -249.12044;
 }

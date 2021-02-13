@@ -1,25 +1,31 @@
 input {
-  background-color: white;
-  border: 3px solid #ccc;
+  background-color: #ccc;
+  border: 3px solid white;
   border-radius: 10px;
 }
 
 input:focus {
   outline: none;
-  border: 3px solid gray;
+  background-color: #ccc;
+  border: 3px solid black;
+  border-radius: 10px;
 }
 
 body {
   background-color: #ccc;
 }
 
+button {
+  background-color: #FFC1CC;
+  border: 3px solid white;
+  border-radius: 10px;
+}
+
 .centered {
   margin: auto;
-  width: 50%;
+  width: 100%;
   text-align: center;
-  color: darkgrey;
   horizontal-align: center;
-  vertical-align: center;
 }
 
 .right {
@@ -33,7 +39,7 @@ body {
 #tab-header {
   position: fixed;
   max-width: 20%;
-  word-wrap : break-word;
+  word-break : break-word;
   left: 10%;
   transform: translateX(-50%);
 }
@@ -93,7 +99,7 @@ body {
 }
 
 input:checked + .slider {
-  background-color: lightblue;
+  background-color: #FFC1CC;
 }
 
 input:checked + .slider:before {
@@ -109,7 +115,8 @@ input:checked + .slider:before {
 }
 
 table, th, td {
-  border: 1px solid black;
+  border: 3px solid white;
+  word-break: break-all;
 }
 
 table {
@@ -135,10 +142,9 @@ table {
   border-radius: 20px 20px;
   display: block;
   background-color: inherit;
-  border: 10px solid white;
+  border: none;
   padding: 15px 15px;
   width: 100%;
-  border: none;
   outline: none;
   text-align: left;
   cursor: pointer;
@@ -150,7 +156,7 @@ table {
 }
 
 .tab-header button.active {
-  background-color: #ccc;
+  background-color: #FFC1CC;
 }
 
 .tab {
@@ -158,7 +164,7 @@ table {
   float: left;
   padding: 15px 15px;
   border: 3px solid white;
-  background-color: #FFC1CC;
+  background-color: lightblue;
   width: 40%;
   height: 100%;
 }

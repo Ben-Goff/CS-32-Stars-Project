@@ -34,7 +34,6 @@ public class NaiveRadius implements REPLCommand {
    */
   @Override
   public Star[] run(String argumentString) {
-    String[] closeStars;
     boolean twoParam;
     boolean fourParam;
     double radius;

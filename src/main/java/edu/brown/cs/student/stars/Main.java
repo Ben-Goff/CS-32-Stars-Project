@@ -174,7 +174,8 @@ public final class Main {
         }
       }
       resultsString = resultsString + "</table>";
-      Map<String, String> variables = ImmutableMap.of("title", "RADius Results", "results", resultsString);
+      Map<String, String> variables = ImmutableMap
+          .of("title", "RADius Results", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }
@@ -225,7 +226,8 @@ public final class Main {
         }
       }
       resultsString = resultsString + "</table>";
-      Map<String, String> variables = ImmutableMap.of("title", "Neighbors Results", "results", resultsString);
+      Map<String, String> variables = ImmutableMap
+          .of("title", "Neighbors Results", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }

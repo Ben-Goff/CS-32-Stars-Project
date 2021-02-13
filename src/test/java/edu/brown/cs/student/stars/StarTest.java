@@ -96,5 +96,7 @@ public class StarTest {
         Constants.FIVE, Constants.ALMOST_ZERO);
     assertEquals(star.distance(Constants.NEG_THREE, Constants.FIVE, Constants.EIGHT),
         Constants.NINE, Constants.ALMOST_ZERO);
+    assertEquals(star.distance(Constants.NEG_THREE, Constants.FOUR, Constants.ONE),
+        Constants.FIVE, Constants.ALMOST_ZERO);
   }
 }

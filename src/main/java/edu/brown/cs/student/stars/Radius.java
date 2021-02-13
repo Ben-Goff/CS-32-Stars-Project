@@ -110,7 +110,7 @@ public class Radius implements REPLCommand {
     try {
       Star target = Star.getStar(name);
       if (target == null) {
-        throw new RuntimeException("Star not found");
+        throw new RuntimeException("ERROR: Star not found");
       }
       int layer = 0;
       int dimension = 3;
@@ -122,10 +122,12 @@ public class Radius implements REPLCommand {
       } else {
         Star node = (Star) starTree.getNode().get();
         if (target.getX() - node.getX() < r) {
-          withinRadiusLeft = radius(starTree.getLeft(), r, target.getX(), target.getY(), target.getZ(), 1);
+          withinRadiusLeft = radius(starTree.getLeft(), r,
+              target.getX(), target.getY(), target.getZ(), 1);
         }
         if (node.getX() - target.getX() <= r) {
-          withinRadiusRight = radius(starTree.getRight(), r, target.getX(), target.getY(), target.getZ(), 1);
+          withinRadiusRight = radius(starTree.getRight(), r,
+              target.getX(), target.getY(), target.getZ(), 1);
         }
         if ((node.distance(target.getX(), target.getY(), target.getZ()) <= r)) {
           withinRadiusRight.add(node);

@@ -1,12 +1,12 @@
 input {
-  background-color: #FFC1CC;
+  background-color: #ccc;
   border: 3px solid white;
   border-radius: 10px;
 }
 
 input:focus {
   outline: none;
-  background-color: #FFC1CC;
+  background-color: #ccc;
   border: 3px solid black;
   border-radius: 10px;
 }
@@ -39,7 +39,7 @@ button {
 #tab-header {
   position: fixed;
   max-width: 20%;
-  word-wrap : break-word;
+  word-break : break-word;
   left: 10%;
   transform: translateX(-50%);
 }
@@ -116,6 +116,7 @@ input:checked + .slider:before {
 
 table, th, td {
   border: 3px solid white;
+  word-break: break-all;
 }
 
 table {
@@ -141,10 +142,9 @@ table {
   border-radius: 20px 20px;
   display: block;
   background-color: inherit;
-  border: 10px solid white;
+  border: none;
   padding: 15px 15px;
   width: 100%;
-  border: none;
   outline: none;
   text-align: left;
   cursor: pointer;

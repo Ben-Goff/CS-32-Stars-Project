@@ -63,7 +63,8 @@ public class REPL {
           if (this.commands.get(i).name().equals(command)) {
             found = true;
             Star[] resultStars = this.commands.get(i).run(argumentString);
-            String[] resultIDs = Arrays.stream(resultStars).map(s -> s.getStarID()).toArray(String[]::new);
+            String[] resultIDs = Arrays.stream(resultStars).map(s -> s.getStarID())
+                .toArray(String[]::new);
             for (int j = 0; j < resultIDs.length; j++) {
               System.out.println(Array.get(resultIDs, j));
             }

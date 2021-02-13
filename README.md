@@ -61,4 +61,4 @@ KNOWN CHECKSTYLE ERRORS:
 - N/A
 
 OUTSIDE RESOURCES USED:
-- I got some ideas for different HTML and CSS designs from https://www.w3schools.com/
+- I got some ideas for different CSS designs from https://www.w3schools.com/
