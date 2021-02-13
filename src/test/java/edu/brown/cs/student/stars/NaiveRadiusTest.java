@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class NaiveRadiusTest {
 
-  private NaiveRadius radius;
+  private NaiveRadius radius = new NaiveRadius();
 
   /**
    * Resets the NaiveRadius object.

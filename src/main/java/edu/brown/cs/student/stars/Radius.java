@@ -75,9 +75,6 @@ public class Radius implements REPLCommand {
    * @return ArrayList<Star>
    */
   public static Star[] radius(double r, double ex, double why, double zee) {
-    int layer = 0;
-    int dimension = 3;
-    int index = layer % dimension;
     KDTree starTree = Star.getStarTree();
     ArrayList<Star> withinRadiusLeft = new ArrayList<>();
     ArrayList<Star> withinRadiusRight = new ArrayList<>();
@@ -112,9 +109,6 @@ public class Radius implements REPLCommand {
       if (target == null) {
         throw new RuntimeException("ERROR: Star not found");
       }
-      int layer = 0;
-      int dimension = 3;
-      int index = layer % dimension;
       ArrayList<Star> withinRadiusLeft = new ArrayList<>();
       ArrayList<Star> withinRadiusRight = new ArrayList<>();
       if (starTree.getNode().isEmpty()) {

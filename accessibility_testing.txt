@@ -1,0 +1,33 @@
+How might a non-impaired user might benefit from increased web accessibility (that isn’t already discussed above)?
+
+- Non-impaired users can benefit from different means of content delivery, such as transcripts meant for hearing-impaired
+  users, or audio readings meant for visually-impaired users. Some users may simply prefer to read the contents of a
+  video, or listen to the contents of a page. Non-impaired users can also benefit from forms that alert the of their
+  mistakes. Being able to clearly know which fields needs to be edited allow users to have a quicker experience. Speed
+  of use can also be improved for non-impaired users by placing page content into related clusters, separated from each
+  other. This makes it easier to digest the content on a page at a quick glance.
+
+What are three design choices that User Inyerface made that harmed your user experience?
+Explain how you would alter each design choice to improve accessibility and usability.
+
+- The first design choice that made User Inyerface hard to work with was the sample texts in each of the text fields.
+  Although on the surface it made it easier to know what to put in each field, the text did not disappear when the field
+  was selected; it had to be deleted. This necessitated deleting the sample text in every text box. The second design
+  choice that made User Inyerface hard to work with was unclear position of elements. When doing the human verification,
+  there were check boxes above and below each image, between each row. Depending on how far down the page is scrolled
+  it was hard to tell whether the corresponding check boxes were above or below the images. Grouping them together with
+  a common border/background would make it more clear. The third design choice that made User Inyerface hard to work
+  with was annoying popups. Every minute, a popup would appear, telling you to speed up. The "close" button was just
+  regular text, with no box or underlining. In addition, the font color was very similar to the background. Initially,
+  I thought these popups were a "time out" message and restarted the sign-up entirely.
+
+What are three changes you made to your site to increase your Lighthouse (or other) audit score?
+Explain how each change increases your site’s performance or accessibility.
+
+- The first change I made was giving each of my HTML elements unique IDs. This allows assistive technologies, such as
+  screen readers, to properly read the page. With duplicate IDs, all but the first element with a given ID may be
+  ignored by such technologies. The second change I made was adding a [lang] tag to my HTML pages. This allows users
+  whose default browser language is not English to know that the page is in English, which can aid the use of automatic
+  translation tools. The third change I made was to add a <meta> tag to my HTML pages. These help with search engine
+  optimization, letting search engines know directly what types of content my pages have. In turn, this makes it easier
+  for potential users to find my page.

@@ -150,9 +150,19 @@ public class Star implements Coordinate {
    * @param s
    * @return boolean
    */
-  public boolean equals(Star s) {
-    return s.starID.equals(this.starID) && s.properName.equals(this.properName)
-        && (s.x == this.x) && (s.y == this.y) && (s.z == this.z);
+  @Override
+  public boolean equals(Object s) {
+    return ((Star) s).starID.equals(this.starID) && ((Star) s).properName.equals(this.properName)
+        && (((Star) s).x == this.x) && (((Star) s).y == this.y) && (((Star) s).z == this.z);
+  }
+
+  /**
+   * hashCode for Stars objects.
+   * @return int
+   */
+  @Override
+  public int hashCode() {
+    return (int) (starID.hashCode() * properName.hashCode() * x * y * z);
   }
 
   /**

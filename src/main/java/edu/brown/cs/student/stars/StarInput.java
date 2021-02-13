@@ -79,7 +79,7 @@ public class StarInput {
           Math.random() * (Math.random() * FIVE_HUNDRED - TWO_FIFTY)));
     }
     stars = listBuilder;
-    count = ThreadLocalRandom.current().nextInt(0, starCount + 1);
+    count = ThreadLocalRandom.current().nextInt(1, starCount + 1);
     radius = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
     x = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
     y = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;

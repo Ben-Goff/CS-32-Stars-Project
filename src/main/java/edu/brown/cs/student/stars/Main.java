@@ -137,18 +137,19 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       Radius r = new Radius();
       QueryParamsMap qm = req.queryMap();
-      String count = qm.value("radius");
-      String x = qm.value("x");
-      String y = qm.value("y");
-      String z = qm.value("z");
-      String name = qm.value("name");
+      String coordsCount = qm.value("coords-radius");
+      String nameCount = qm.value("name-radius");
+      String x = qm.value("radius-x");
+      String y = qm.value("radius-y");
+      String z = qm.value("radius-z");
+      String name = qm.value("radius-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = r.run(" " + count + " " + x + " " + y + " " + z);
+        results = r.run(" " + coordsCount + " " + x + " " + y + " " + z);
       } else {
-        results = r.run(" " + count + " " + "\"" + name + "\"");
+        results = r.run(" " + nameCount + " " + "\"" + name + "\"");
       }
       String replOutput = out.toString();
       String resultsString;
@@ -189,18 +190,19 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       Neighbors n = new Neighbors();
       QueryParamsMap qm = req.queryMap();
-      String count = qm.value("count");
-      String x = qm.value("x");
-      String y = qm.value("y");
-      String z = qm.value("z");
-      String name = qm.value("name");
+      String coordsCount = qm.value("coords-count");
+      String nameCount = qm.value("name-count");
+      String x = qm.value("nearest-x");
+      String y = qm.value("nearest-y");
+      String z = qm.value("nearest-z");
+      String name = qm.value("nearest-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = n.run(" " + count + " " + x + " " + y + " " + z);
+        results = n.run(" " + coordsCount + " " + x + " " + y + " " + z);
       } else {
-        results = n.run(" " + count + " " + "\"" + name + "\"");
+        results = n.run(" " + nameCount + " " + "\"" + name + "\"");
       }
       String replOutput = out.toString();
       String resultsString;

@@ -79,12 +79,7 @@ public class NaiveNeighbors implements REPLCommand {
    */
   public static Star[] naiveNeighbors(int k, double ex, double why, double zee) {
     Vector<Star> data = Star.getStarData();
-    if (k > data.size()) {
-      throw new RuntimeException("ERROR: " + k + " is more than the loaded number of stars ("
-          + data.size() + ")");
-    }
     TreeMap<Double, ArrayList<Star>> starDistance = new TreeMap();
-    ArrayList<Star> currentValue;
     Star currentStar;
     double currentDistance;
     for (int i = 0; i < data.size(); i++) {
@@ -95,7 +90,7 @@ public class NaiveNeighbors implements REPLCommand {
       }
       starDistance.get(currentDistance).add(currentStar);
     }
-    return getCloseStars(k, (TreeMap<Double, ArrayList<Star>>) starDistance);
+    return getCloseStars(Math.min(k, data.size()), (TreeMap<Double, ArrayList<Star>>) starDistance);
   }
 
   /**
@@ -118,11 +113,7 @@ public class NaiveNeighbors implements REPLCommand {
       if (coordinate == null) {
         throw new RuntimeException("ERROR: Star not found");
       } else {
-        if (k + 1 > data.size()) {
-          return new Star[0];
-        }
         TreeMap<Double, ArrayList<Star>> starDistance = new TreeMap();
-        ArrayList<Star> currentValue;
         Star currentStar;
         double currentDistance;
         for (int i = 0; i < data.size(); i++) {
@@ -135,7 +126,7 @@ public class NaiveNeighbors implements REPLCommand {
             starDistance.get(currentDistance).add(currentStar);
           }
         }
-        return getCloseStars(k, (TreeMap<Double, ArrayList<Star>>) starDistance);
+        return getCloseStars(Math.min(k, data.size() - 1), (TreeMap<Double, ArrayList<Star>>) starDistance);
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());

@@ -8,13 +8,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 public class Neighbors implements REPLCommand {
 
-  private static PriorityQueue<Star> currentNear = new PriorityQueue<>();
-  private static TreeSet<Star> currentNearest = new TreeSet<>();
+  private static PriorityQueue<Star> currentNearest = new PriorityQueue<>();
   private static ArrayList<Star> currentFringe;
   private static KDTree currentData;
 
@@ -24,12 +22,12 @@ public class Neighbors implements REPLCommand {
   public Neighbors() {
   }
 
-  public static void setCurrentNearest(TreeSet<Star> cn) {
+  public static void setCurrentNearest(PriorityQueue<Star> cn) {
     currentNearest = cn;
   }
 
   public static void resetCurrentFringe() {
-    currentFringe = new ArrayList<Star>();
+    currentFringe = new ArrayList<>();
   }
 
   /**
@@ -63,16 +61,11 @@ public class Neighbors implements REPLCommand {
         int firstQuote = argumentString.indexOf("\"");
         int secondQuote = argumentString.lastIndexOf("\"");
         count = Integer.parseInt(argumentString.substring(0, firstQuote - 1).trim());
-        // Throw error if searching for more Stars than are loaded
-        if (count > Star.getStarData().size()) {
-          throw new RuntimeException("ERROR: " + count
-              + " is more than the loaded number of stars (" + Star.getStarData().size() + ")");
-        }
         String name = argumentString.substring(firstQuote + 1, secondQuote);
         Star target = Star.getStar(name);
-        //TreeSet cleared and designated to sort by distance to target coordinate
-        currentNearest = new TreeSet<>(Comparator.comparingDouble(
-            s -> s.distance(target.getX(), target.getY(), target.getZ())));
+        //Queue cleared and designated to sort by distance to target coordinate
+        currentNearest = new PriorityQueue<>(Comparator.comparingDouble(
+            s -> -1 * s.distance(target.getX(), target.getY(), target.getZ())));
         currentNearest.clear();
         return neighbors(currentData, count, target.getX(), target.getY(), target.getZ(),
             Optional.of(target));
@@ -80,16 +73,12 @@ public class Neighbors implements REPLCommand {
         if (fourParam) {
           String[] arguments = argumentString.trim().split(" +");
           count = Integer.parseInt(Array.get(arguments, 0).toString());
-          // Throw error if searching for more Stars than are loaded
-          if (count > Star.getStarData().size()) {
-            throw new RuntimeException("ERROR: " + count
-                + " is more than the loaded number of stars (" + Star.getStarData().size() + ")");
-          }
           double x = Double.parseDouble(Array.get(arguments, 1).toString());
           double y = Double.parseDouble(Array.get(arguments, 2).toString());
           double z = Double.parseDouble(Array.get(arguments, 3).toString());
-          //TreeSet cleared and designated to sort by distance to target coordinate
-          currentNearest = new TreeSet<>(Comparator.comparingDouble(s -> s.distance(x, y, z)));
+          //Queue cleared and designated to sort by distance to target coordinate
+          currentNearest = new PriorityQueue<>(Comparator
+              .comparingDouble(s -> -1 * s.distance(x, y, z)));
           return neighbors(currentData, count, x, y, z, Optional.empty());
         } else {
           // Throw error if argumentString doesn't match Neighbors command regex
@@ -119,6 +108,10 @@ public class Neighbors implements REPLCommand {
     if (k == 1 && Star.getStarData().size() == 1 && target.isPresent()) {
       return new Star[0];
     }
+    if (k == Star.getStarData().size() && target.isPresent()) {
+      return Star.getStarData().stream()
+          .filter(s -> !s.getStarID().equals(target.get().getStarID())).toArray(Star[]::new);
+    }
     int count;
     if (target.isPresent()) {
       count = k + 1;
@@ -130,14 +123,10 @@ public class Neighbors implements REPLCommand {
       currentNearest.remove(target.get());
       currentFringe.remove(target.get());
     }
-    System.out.println("nearest: " + currentNearest.size());
-    System.out.println("fringe: " + currentFringe.size());
-    int moveFromFringe = k - currentNearest.size();
-    System.out.println("move: " + moveFromFringe);
+    int moveFromFringe = Math.min(k - currentNearest.size(), currentFringe.size());
     Collections.shuffle(currentFringe);
     for (int i = 0; i < moveFromFringe; i++) {
       currentNearest.add(currentFringe.get(i));
-      System.out.println("nearest: " + currentNearest.size());
     }
     return currentNearest.stream().sorted(Comparator.comparingDouble(
         s -> s.distance(ex, why, zee))).toArray(Star[]::new);
@@ -173,7 +162,7 @@ public class Neighbors implements REPLCommand {
               currentNearest.add(current);
             } else {
               currentNearest.add(current);
-              Star moveToFringe = currentNearest.pollLast();
+              Star moveToFringe = currentNearest.poll();
               currentFringe.clear();
               currentFringe.add(moveToFringe);
             }

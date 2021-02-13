@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta name="Description" content="KD Trees, Radius, Nearest Neighbors, Search, CS32, Brown University, Stars">
     <meta charset="utf-8">
     <title>${title}</title>
     <link rel="icon" type="image/png" href="favicon.png"/>

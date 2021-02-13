@@ -30,22 +30,22 @@
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-<form id="nearest-coords" method="GET" action="/neighbors" class="left">
-  <label for="count">Count: </label><br>
-  <input id="count" name="count"> <br>
-  <label for="x">X Coordinate: </label><br>
-  <input id="x" name="x"> <br>
-  <label for="y">Y Coordinate: </label><br>
-  <input id="y" name="y"> <br>
-  <label for="z">Z Coordinate: </label><br>
-  <input id="z" name="z"> <br> <br>
+<form id="nearest-coords-form" method="GET" action="/neighbors" class="left">
+  <label for="coords-count">Count: </label><br>
+  <input id="coords-count" name="count"> <br>
+  <label for="nearest-x">X Coordinate: </label><br>
+  <input id="nearest-x" name="x"> <br>
+  <label for="nearest-y">Y Coordinate: </label><br>
+  <input id="nearest-y" name="y"> <br>
+  <label for="nearest-z">Z Coordinate: </label><br>
+  <input id="nearest-z" name="z"> <br> <br>
   <button id="compute-nearest-coords"> Search </button>
 </form>
-<form style="display:none" id="nearest-name" method="GET" action="/neighbors" class="left">
-  <label for="count">Count: </label><br>
-  <input id="count" name="count"> <br>
-  <label for="name">Star Name: </label><br>
-  <input id="name" name="name" id="name"> <br> <br>
+<form style="display:none" id="nearest-name-form" method="GET" action="/neighbors" class="left">
+  <label for="name-count">Count: </label><br>
+  <input id="name-count" name="count"> <br>
+  <label for="nearest-name">Star Name: </label><br>
+  <input id="nearest-name" name="name"> <br> <br>
   <button id="compute-nearest-name"> Search </button>
 </form>
 </div>
@@ -59,22 +59,22 @@
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-  <form id="radius-coords" method="GET" action="/radius" class="left">
-    <label for="radius">Radius: </label><br>
-    <input id="radius" name="radius"> <br>
-    <label for="x">X Coordinate: </label><br>
-    <input id="x" name="x"> <br>
-    <label for="y">Y Coordinate: </label><br>
-    <input id="y" name="y"> <br>
-    <label for="z">Z Coordinate: </label><br>
-    <input id="z" name="z"> <br> <br>
+  <form id="radius-coords-form" method="GET" action="/radius" class="left">
+    <label for="coords-radius">Radius: </label><br>
+    <input id="coords-radius" name="radius"> <br>
+    <label for="radius-x">X Coordinate: </label><br>
+    <input id="radius-x" name="x"> <br>
+    <label for="radius-y">Y Coordinate: </label><br>
+    <input id="radius-y" name="y"> <br>
+    <label for="radius-z">Z Coordinate: </label><br>
+    <input id="radius-z" name="z"> <br> <br>
     <button id="compute-radius-coords"> Search </button>
   </form>
-  <form style="display:none" id="radius-name" method="GET" action="/radius" class="left">
-    <label for="radius">Radius: </label><br>
-    <input id="radius" name="radius"> <br>
-    <label for="name">Star Name: </label><br>
-    <input id="name" name="name" id="name"> <br> <br>
+  <form style="display:none" id="radius-name-form" method="GET" action="/radius" class="left">
+    <label for="name-radius">Radius: </label><br>
+    <input id="name-radius" name="radius"> <br>
+    <label for="radius-name">Star Name: </label><br>
+    <input id="radius-name" name="name"> <br> <br>
     <button id="compute-radius-name"> Search </button>
   </form>
 </div>
