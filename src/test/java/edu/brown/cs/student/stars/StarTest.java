@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import static edu.brown.cs.student.stars.Star.getCloseStars;
+import static edu.brown.cs.student.stars.NaiveNeighbors.getCloseStars;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

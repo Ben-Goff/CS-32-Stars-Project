@@ -1,9 +1,14 @@
 package edu.brown.cs.student.stars;
 
+import edu.brown.cs.student.util.KDTree;
 import edu.brown.cs.student.util.REPLCommand;
-
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Radius data structure for running radius commands.
@@ -44,7 +49,7 @@ public class Radius implements REPLCommand {
       int secondQuote = argumentString.lastIndexOf("\"");
       radius = Double.parseDouble(argumentString.substring(0, firstQuote - 1).trim());
       String name = argumentString.substring(firstQuote + 1, secondQuote);
-      return Star.radius(radius, name);
+      return radius(radius, name);
     } else {
       if (fourParam) {
         String[] arguments = argumentString.trim().split(" +");
@@ -52,7 +57,7 @@ public class Radius implements REPLCommand {
         double x = Double.parseDouble(Array.get(arguments, 1).toString());
         double y = Double.parseDouble(Array.get(arguments, 2).toString());
         double z = Double.parseDouble(Array.get(arguments, 3).toString());
-        return Star.radius(radius, x, y, z);
+        return radius(radius, x, y, z);
       } else {
         // Throw error if argumentString doesn't match Radius command regex
         System.out.println("ERROR: malformed radius command");
@@ -61,4 +66,139 @@ public class Radius implements REPLCommand {
     return new Star[0];
   }
 
+  /**
+   * Returns the iDs of all Stars whose distance from the input coordinate is less than r.
+   * @param r
+   * @param ex
+   * @param why
+   * @param zee
+   * @return ArrayList<Star>
+   */
+  public static Star[] radius(double r, double ex, double why, double zee) {
+    int layer = 0;
+    int dimension = 3;
+    int index = layer % dimension;
+    KDTree starTree = Star.getStarTree();
+    ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+    ArrayList<Star> withinRadiusRight = new ArrayList<>();
+    if (starTree.getNode().isEmpty()) {
+      return new Star[0];
+    } else {
+      Star node = (Star) starTree.getNode().get();
+      if (ex - node.getX() < r) {
+        withinRadiusLeft = radius(starTree.getLeft(), r, ex, why, zee, 1);
+      }
+      if (node.getX() - ex <= r) {
+        withinRadiusRight = radius(starTree.getRight(), r, ex, why, zee, 1);
+      }
+      if ((node.distance(ex, why, zee) <= r)) {
+        withinRadiusRight.add(node);
+      }
+      return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
+          .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee))).toArray(Star[]::new);
+    }
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from star with the inputted name is less than r.
+   * @param r
+   * @param name
+   * @return ArrayList<Star>
+   */
+  public static Star[] radius(double r, String name) {
+    KDTree starTree = Star.getStarTree();
+    try {
+      Star target = Star.getStar(name);
+      if (target == null) {
+        throw new RuntimeException("Star not found");
+      }
+      int layer = 0;
+      int dimension = 3;
+      int index = layer % dimension;
+      ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+      ArrayList<Star> withinRadiusRight = new ArrayList<>();
+      if (starTree.getNode().isEmpty()) {
+        return new Star[0];
+      } else {
+        Star node = (Star) starTree.getNode().get();
+        if (target.getX() - node.getX() < r) {
+          withinRadiusLeft = radius(starTree.getLeft(), r, target.getX(), target.getY(), target.getZ(), 1);
+        }
+        if (node.getX() - target.getX() <= r) {
+          withinRadiusRight = radius(starTree.getRight(), r, target.getX(), target.getY(), target.getZ(), 1);
+        }
+        if ((node.distance(target.getX(), target.getY(), target.getZ()) <= r)) {
+          withinRadiusRight.add(node);
+        }
+        return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
+            .filter(star -> !star.getProperName().equals(name)).toArray(Star[]::new);
+      }
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return new Star[0];
+    }
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from the input coordinate
+   * is less than r in the given KDTree, slicing on coordinate l.
+   * @param tree
+   * @param r
+   * @param ex
+   * @param why
+   * @param zee
+   * @param l
+   * @return ArrayList<Star>
+   */
+  public static ArrayList<Star> radius(Optional<KDTree> tree, double r,
+                                       double ex, double why, double zee, int l) {
+    int layer = l;
+    int dimension = 3;
+    int index = layer % dimension;
+    ArrayList<Star> withinRadiusLeft = new ArrayList<>();
+    ArrayList<Star> withinRadiusRight = new ArrayList<>();
+    if (tree.isEmpty()) {
+      return new ArrayList<>();
+    } else {
+      Star node = (Star) tree.get().getNode().get();
+      switch (index) {
+        case 0:
+          if (ex - node.getX() < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.getX() - ex <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        case 1:
+          if (why - node.getY() < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.getY() - why <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        case 2:
+          if (zee - node.getZ() < r) {
+            withinRadiusLeft = radius(tree.get().getLeft(), r, ex, why, zee, layer++);
+          }
+          if (node.getZ() - zee <= r) {
+            withinRadiusRight = radius(tree.get().getRight(), r, ex, why, zee, layer++);
+          }
+          if ((node.distance(ex, why, zee) <= r)) {
+            withinRadiusRight.add(node);
+          }
+          break;
+        default:
+      }
+      return new ArrayList<Star>(Stream.of(withinRadiusLeft, withinRadiusRight)
+          .flatMap(los -> los.stream()).collect(Collectors.toList()));
+    }
+  }
 }

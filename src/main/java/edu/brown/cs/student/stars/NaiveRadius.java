@@ -2,7 +2,10 @@ package edu.brown.cs.student.stars;
 
 import edu.brown.cs.student.util.REPLCommand;
 import java.lang.reflect.Array;
+import java.util.Comparator;
+import java.util.Vector;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * NaiveRadius data structure for running naive_radius commands.
@@ -43,7 +46,7 @@ public class NaiveRadius implements REPLCommand {
       int secondQuote = argumentString.lastIndexOf("\"");
       radius = Double.parseDouble(argumentString.substring(0, firstQuote - 1).trim());
       String name = argumentString.substring(firstQuote + 1, secondQuote);
-      return Star.naiveRadius(radius, name);
+      return naiveRadius(radius, name);
     } else {
       if (fourParam) {
         String[] arguments = argumentString.trim().split(" +");
@@ -51,12 +54,52 @@ public class NaiveRadius implements REPLCommand {
         double x = Double.parseDouble(Array.get(arguments, 1).toString());
         double y = Double.parseDouble(Array.get(arguments, 2).toString());
         double z = Double.parseDouble(Array.get(arguments, 3).toString());
-        return Star.naiveRadius(radius, x, y, z);
+        return naiveRadius(radius, x, y, z);
       } else {
         // Throw error if argumentString doesn't match NaiveRadius command regex
         System.out.println("ERROR: malformed naive_radius command");
       }
     }
     return new Star[0];
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from the input coordinate is less than r.
+   * @param r
+   * @param ex
+   * @param why
+   * @param zee
+   * @return Star[]
+   */
+  public static Star[] naiveRadius(double r, double ex, double why, double zee) {
+    Vector<Star> data = Star.getStarData();
+    Stream<Star> starStream = data.stream()
+        .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee)));
+    return starStream.filter(s -> s.distance(ex, why, zee) <= r).toArray(Star[]::new);
+  }
+
+  /**
+   * Returns the iDs of all Stars whose distance from the Star with properName name is less than r.
+   * @param r
+   * @param name
+   * @return Star[]
+   */
+  public static Star[] naiveRadius(double r, String name) {
+    try {
+      Star coordinate = Star.getStar(name);
+      if (coordinate == null) {
+        throw new RuntimeException("ERROR: Star not found");
+      } else {
+        Star finalCoordinate = coordinate;
+        Vector<Star> data = Star.getStarData();
+        Stream<Star> starStream = data.stream()
+            .sorted(Comparator.comparingDouble(s -> s.distance(finalCoordinate)));
+        return starStream.filter(s -> s.distance(finalCoordinate) <= r && !s.getStarID()
+            .equals(finalCoordinate.getStarID())).toArray(Star[]::new);
+      }
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return new Star[0];
+    }
   }
 }

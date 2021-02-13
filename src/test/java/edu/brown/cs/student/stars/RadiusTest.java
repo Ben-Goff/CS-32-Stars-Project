@@ -16,9 +16,9 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import static edu.brown.cs.student.stars.Neighbors.resetCurrentFringe;
 import static edu.brown.cs.student.stars.Neighbors.setCurrentNearest;
-import static edu.brown.cs.student.stars.Star.naiveNeighbors;
-import static edu.brown.cs.student.stars.Star.naiveRadius;
-import static edu.brown.cs.student.stars.Star.radius;
+import static edu.brown.cs.student.stars.NaiveNeighbors.naiveNeighbors;
+import static edu.brown.cs.student.stars.NaiveRadius.naiveRadius;
+import static edu.brown.cs.student.stars.Radius.radius;
 import static org.junit.Assert.assertTrue;
 
 public class RadiusTest {

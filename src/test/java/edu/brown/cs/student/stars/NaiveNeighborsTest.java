@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import static edu.brown.cs.student.stars.NaiveNeighbors.naiveNeighbors;
 import static org.junit.Assert.assertTrue;
 
 public class NaiveNeighborsTest {
@@ -28,7 +29,7 @@ public class NaiveNeighborsTest {
   @Test
   public void testNoStars() {
     reset();
-    Star[] output = Star.naiveNeighbors(0, 0, 0, 0);
+    Star[] output = naiveNeighbors(0, 0, 0, 0);
     assertTrue(output.length == 0);
   }
 
@@ -39,10 +40,10 @@ public class NaiveNeighborsTest {
   public void testAllStars() throws IOException {
     reset();
     Stars.loadData("data/stars/one-star.csv");
-    Star[] output = Star.naiveNeighbors(1, 0, 0, 0);
+    Star[] output = naiveNeighbors(1, 0, 0, 0);
     assertTrue(output.length == 1);
     assertTrue(((Star) Array.get(output, 0)).getStarID().equals("1"));
-    output = Star.naiveNeighbors(0, "Lonely Star");
+    output = naiveNeighbors(0, "Lonely Star");
     assertTrue(output.length == 0);
   }
 
@@ -62,14 +63,14 @@ public class NaiveNeighborsTest {
   public void testStars() throws IOException {
     reset();
     Stars.loadData("data/stars/ten-star.csv");
-    Star[] output = Star.naiveNeighbors(5, -1, -1, -1);
+    Star[] output = naiveNeighbors(5, -1, -1, -1);
     assertTrue(output.length == 5);
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("70667"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71454"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("71457"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("87666"::equals));
-    output = Star.naiveNeighbors(5, "Proxima Centauri");
+    output = naiveNeighbors(5, "Proxima Centauri");
     assertTrue(output.length == 5);
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("0"::equals));
     assertTrue(Arrays.stream(output).map(s -> s.getStarID()).anyMatch("118721"::equals));

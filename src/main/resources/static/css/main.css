@@ -1,24 +1,31 @@
-input[type="number"] {
-  width: 3em;
-}
-body {
-  background-image: url("yo.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+input {
+  background-color: #FFC1CC;
+  border: 3px solid white;
+  border-radius: 10px;
 }
 
-#inputted {
+input:focus {
+  outline: none;
   background-color: #FFC1CC;
+  border: 3px solid black;
+  border-radius: 10px;
+}
+
+body {
+  background-color: #ccc;
+}
+
+button {
+  background-color: #FFC1CC;
+  border: 3px solid white;
+  border-radius: 10px;
 }
 
 .centered {
   margin: auto;
-  width: 50%;
+  width: 100%;
   text-align: center;
-  color: darkgrey;
   horizontal-align: center;
-  vertical-align: center;
 }
 
 .right {
@@ -29,11 +36,36 @@ body {
   float: left;
 }
 
+#tab-header {
+  position: fixed;
+  max-width: 20%;
+  word-wrap : break-word;
+  left: 10%;
+  transform: translateX(-50%);
+}
+
+#input-header {
+  position: fixed;
+  max-width: 40%;
+  word-wrap : break-word;
+  left: 40%;
+  transform: translateX(-50%);
+}
+
+#results-header {
+  position: fixed;
+  max-width: 40%;
+  word-wrap : break-word;
+  left: 80%;
+  transform: translateX(-50%);
+}
+
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  transform: translateY(8px);
 }
 
 .switch input {
@@ -43,6 +75,7 @@ body {
 }
 
 .slider {
+  border-radius: 34px;
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -50,11 +83,11 @@ body {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
   transition: .4s;
 }
 
 .slider:before {
+  border-radius: 50%;
   position: absolute;
   content: "";
   height: 26px;
@@ -62,27 +95,15 @@ body {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #FFC1CC;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
 }
 
 .hidden {
@@ -94,15 +115,88 @@ input:checked + .slider:before {
 }
 
 table, th, td {
-  border: 1px solid black;
+  border: 3px solid white;
 }
 
 table {
   background-color: #FFC1CC;
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 70%;
+  float: left;
   border-collapse: collapse;
   text-align: left;
+  width: 100%
+}
+
+.tab-header {
+  display: block;
+  float: left;
+  border: 3px solid white;
+  border-radius: 20px 20px;
+  background-color: lightblue;
+  background-radius: 20px 20px;
+  width: 20%;
+  height: 100%;
+}
+
+.tab-header button {
+  border-radius: 20px 20px;
+  display: block;
+  background-color: inherit;
+  border: 10px solid white;
+  padding: 15px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab-header button:hover {
+  background-color: #ddd;
+}
+
+.tab-header button.active {
+  background-color: #FFC1CC;
+}
+
+.tab {
+  border-radius: 20px 20px;
+  float: left;
+  padding: 15px 15px;
+  border: 3px solid white;
+  background-color: lightblue;
+  width: 40%;
+  height: 100%;
+}
+
+input {
+  width: 100%;
+}
+
+#results {
+  border-radius: 20px 20px;
+  padding: 15px 15px;
+  float: left;
+  width: 34%;
+  height: 100%;
+  border: 3px solid white;
+  background-color: lightblue;
+}
+
+#tab-label {
+  position: fixed;
+  left: 10%;
+  transform: translateX(-50%);
+}
+
+#input-label {
+  position: fixed;
+  left: 40%;
+  transform: translateX(-50%);
+}
+
+#results-label {
+  position: fixed;
+  left: 80%;
+  transform: translateX(-50%);
 }

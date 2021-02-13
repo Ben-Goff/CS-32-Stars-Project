@@ -90,9 +90,29 @@ public final class Main {
 
     // Setup Spark Routes
     Spark.get("/stars", new FrontHandler(), freeMarker);
+    Spark.get("/load", new LoadStarsHandler(), freeMarker);
     Spark.get("/neighbors", new NeighborsHandler(), freeMarker);
     Spark.get("/radius", new RadiusHandler(), freeMarker);
     Spark.get("/edu/brown/cs/student/stars", new FrontHandler(), freeMarker);
+  }
+
+  /**
+   * Handle requests for Neighbors commands.
+   *
+   */
+  private static class LoadStarsHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) throws Exception {
+      Stars s = new Stars();
+      QueryParamsMap qm = req.queryMap();
+      String path = qm.value("path");
+      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+      System.setOut(new java.io.PrintStream(out));
+      s.run(" " + path);
+      String resultsString = out.toString();
+      Map<String, String> variables = ImmutableMap.of("title", "Loaded", "results", resultsString);
+      return new ModelAndView(variables, "query.ftl");
+    }
   }
 
   /**
@@ -123,30 +143,38 @@ public final class Main {
       String z = qm.value("z");
       String name = qm.value("name");
       Star[] results;
+      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+      System.setOut(new java.io.PrintStream(out));
       if (name == null) {
         results = r.run(" " + count + " " + x + " " + y + " " + z);
       } else {
         results = r.run(" " + count + " " + "\"" + name + "\"");
       }
-      String resultsString = "<table>"
-          + "<tr>"
-          + "<th>Star ID</th>"
-          + "<th>Star Name</th>"
-          + "<th>X</th>"
-          + "<th>Y</th>"
-          + "<th>Z</th>"
-          + "</tr>";
-      for (Star star : results) {
-        resultsString = resultsString + "<tr>"
-            + "<td>" + star.getStarID() + "</td>"
-            + "<td>" + star.getProperName() + "</td>"
-            + "<td>" + star.getX() + "</td>"
-            + "<td>" + star.getY() + "</td>"
-            + "<td>" + star.getZ() + "</td>"
+      String replOutput = out.toString();
+      String resultsString;
+      if (replOutput.contains("ERROR: ")) {
+        resultsString = replOutput;
+      } else {
+        resultsString = "<table>"
+            + "<tr>"
+            + "<th>Star ID</th>"
+            + "<th>Star Name</th>"
+            + "<th>X</th>"
+            + "<th>Y</th>"
+            + "<th>Z</th>"
             + "</tr>";
+        for (Star star : results) {
+          resultsString = resultsString + "<tr>"
+              + "<td>" + star.getStarID() + "</td>"
+              + "<td>" + star.getProperName() + "</td>"
+              + "<td>" + star.getX() + "</td>"
+              + "<td>" + star.getY() + "</td>"
+              + "<td>" + star.getZ() + "</td>"
+              + "</tr>";
+        }
       }
       resultsString = resultsString + "</table>";
-      Map<String, String> variables = ImmutableMap.of("title", "yo", "results", resultsString);
+      Map<String, String> variables = ImmutableMap.of("title", "RADius Results", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }
@@ -166,30 +194,38 @@ public final class Main {
       String z = qm.value("z");
       String name = qm.value("name");
       Star[] results;
+      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+      System.setOut(new java.io.PrintStream(out));
       if (name == null) {
         results = n.run(" " + count + " " + x + " " + y + " " + z);
       } else {
         results = n.run(" " + count + " " + "\"" + name + "\"");
       }
-      String resultsString = "<table>"
-          + "<tr>"
-          + "<th>Star ID</th>"
-          + "<th>Star Name</th>"
-          + "<th>X</th>"
-          + "<th>Y</th>"
-          + "<th>Z</th>"
-          + "</tr>";
-      for (Star star : results) {
-        resultsString = resultsString + "<tr>"
-            + "<td>" + star.getStarID() + "</td>"
-            + "<td>" + star.getProperName() + "</td>"
-            + "<td>" + star.getX() + "</td>"
-            + "<td>" + star.getY() + "</td>"
-            + "<td>" + star.getZ() + "</td>"
+      String replOutput = out.toString();
+      String resultsString;
+      if (replOutput.contains("ERROR: ")) {
+        resultsString = replOutput;
+      } else {
+        resultsString = "<table>"
+            + "<tr>"
+            + "<th>Star ID</th>"
+            + "<th>Star Name</th>"
+            + "<th>X</th>"
+            + "<th>Y</th>"
+            + "<th>Z</th>"
             + "</tr>";
+        for (Star star : results) {
+          resultsString = resultsString + "<tr>"
+              + "<td>" + star.getStarID() + "</td>"
+              + "<td>" + star.getProperName() + "</td>"
+              + "<td>" + star.getX() + "</td>"
+              + "<td>" + star.getY() + "</td>"
+              + "<td>" + star.getZ() + "</td>"
+              + "</tr>";
+        }
       }
       resultsString = resultsString + "</table>";
-      Map<String, String> variables = ImmutableMap.of("title", "yo", "results", resultsString);
+      Map<String, String> variables = ImmutableMap.of("title", "Neighbors Results", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
     }
   }
