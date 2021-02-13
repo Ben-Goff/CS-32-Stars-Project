@@ -98,10 +98,12 @@ public class KDTree {
           .filter(s -> s.getCoordinate(layer) < median.getCoordinate(layer));
       ArrayList<Coordinate> leftList =
           new ArrayList<>(Arrays.asList(leftStream.toArray(Coordinate[]::new)));
+      leftList.sort(Comparator.comparingDouble(c -> c.getCoordinate(0)));
       Stream<Coordinate> rightStream = coords.stream().filter(s -> !((Star) s).equals(median))
           .filter(s -> s.getCoordinate(layer) >= median.getCoordinate(layer));
       ArrayList<Coordinate> rightList =
           new ArrayList<>(Arrays.asList(rightStream.toArray(Coordinate[]::new)));
+      rightList.sort(Comparator.comparingDouble(c -> c.getCoordinate(0)));
       if (leftList.isEmpty()) {
         left = Optional.empty();
       } else {
@@ -126,16 +128,17 @@ public class KDTree {
     dimension = coordinates.get(0).getDimension();
     int index = layer % dimension;
     ArrayList<Coordinate> coords = coordinates;
-    coords.sort(Comparator.comparingDouble(c -> c.getCoordinate(index)));
     int center = coords.size() / 2;
     Coordinate median = coords.get(center);
     node = Optional.of(median);
     ArrayList<Coordinate> leftList = new ArrayList<>(Arrays.asList(
         coords.stream().filter(s -> s.getCoordinate(index) < median.getCoordinate(index))
             .toArray(Coordinate[]::new)));
+    leftList.sort(Comparator.comparingDouble(c -> c.getCoordinate(index)));
     ArrayList<Coordinate> rightList = new ArrayList<>(Arrays.asList(
         coords.stream().filter(s -> s.getCoordinate(index) >= median.getCoordinate(index))
             .filter(s -> !s.equals(median)).toArray(Coordinate[]::new)));
+    rightList.sort(Comparator.comparingDouble(c -> c.getCoordinate(index)));
     if (leftList.isEmpty()) {
       left = Optional.empty();
     } else {

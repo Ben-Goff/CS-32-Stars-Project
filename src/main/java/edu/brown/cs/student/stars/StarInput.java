@@ -1,5 +1,7 @@
 package edu.brown.cs.student.stars;
 
+import edu.brown.cs.student.Constants;
+
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -70,7 +72,7 @@ public class StarInput {
    * Creates a new StarInput with all fields necessary for Stars commands.
    */
   public StarInput() {
-    int starCount = ThreadLocalRandom.current().nextInt(0, TWO_OH_ONE);
+    int starCount = ThreadLocalRandom.current().nextInt(2, Constants.THIRTY);
     Vector<Star> listBuilder = new Vector<>();
     for (int i = 0; i < starCount; i++) {
       listBuilder.add(new Star(Integer.toString(i), Integer.toString(i),
@@ -81,10 +83,10 @@ public class StarInput {
     stars = listBuilder;
     count = ThreadLocalRandom.current().nextInt(1, starCount + 1);
     radius = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
-    x = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
-    y = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
-    z = (Math.random() - POINT_FIVE) * FIVE_HUNDRED;
-    name = Integer.toString(ThreadLocalRandom.current().nextInt(0, starCount + 1));
+    x = (Math.random() - POINT_FIVE) * TWO_FIFTY;
+    y = (Math.random() - POINT_FIVE) * TWO_FIFTY;
+    z = (Math.random() - POINT_FIVE) * TWO_FIFTY;
+    name = Integer.toString(ThreadLocalRandom.current()
+        .nextInt(Constants.FIVE, Math.max(starCount - Constants.FIVE, Constants.SEVEN)));
   }
-
 }

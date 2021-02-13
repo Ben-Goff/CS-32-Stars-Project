@@ -9,9 +9,9 @@
 <div class="tab-header">
   <button id="Load Stars Tab" class="tablinks active" onclick="openTab('Load Stars')">Load Stars</button>
   <button id="Naive Nearest Neighbors Search Tab" class="tablinks" onclick="openTab('Naive Nearest Neighbors Search')">Naive Nearest Neighbors Search</button>
-  <button id="Nearest Neighbors Search Tab" class="tablinks" onclick="openTab('Nearest Neighbors Search')">Nearest Neighbors Search</button>
+  <button id="Nearest Neighbors Search Tab" class="tablinks" onclick="openTab('Nearest Neighbors Search')">KDTree Nearest Neighbors Search</button>
   <button id="Naive Radius Search Tab" class="tablinks" onclick="openTab('Naive Radius Search')">Naive Radius Search</button>
-  <button id="Radius Search Tab" class="tablinks" onclick="openTab('Radius Search')">Radius Search</button>
+  <button id="Radius Search Tab" class="tablinks" onclick="openTab('Radius Search')">KDTree Radius Search</button>
 </div>
 
   <div id='Load Stars' class="tab">
@@ -27,28 +27,28 @@
   <label for="text">1: Select Input Method</label><br>
   <label for="text">Coordinates</label>
   <label class="switch">
-    <input id="naive-nearest-switch" type="checkbox">
+    <input id="nn-switch" type="checkbox">
     <span class="slider"></span>
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-  <form id="naive-nearest-coords-form" method="GET" action="/naiveneighbors" class="left">
-    <label for="naive-coords-count">Count: </label><br>
-    <input id="naive-coords-count" name="count"> <br>
-    <label for="naive-nearest-x">X Coordinate: </label><br>
-    <input id="naive-nearest-x" name="x"> <br>
-    <label for="naive-nearest-y">Y Coordinate: </label><br>
-    <input id="naive-nearest-y" name="y"> <br>
-    <label for="naive-nearest-z">Z Coordinate: </label><br>
-    <input id="naive-nearest-z" name="z"> <br> <br>
-    <button id="compute-naive-nearest-coords"> Search </button>
+  <form id="nn-coords-form" method="GET" action="/naiveneighbors" class="left">
+    <label for="nn-coords">Count: </label><br>
+    <input id="nn-coords" name="nn-coords"> <br>
+    <label for="nn-x">X Coordinate: </label><br>
+    <input id="nn-x" name="nn-x"> <br>
+    <label for="nn-y">Y Coordinate: </label><br>
+    <input id="nn-y" name="nn-y"> <br>
+    <label for="nn-z">Z Coordinate: </label><br>
+    <input id="nn-z" name="nn-z"> <br> <br>
+    <button id="nn-compute-coords"> Search </button>
   </form>
-  <form style="display:none" id="naive-nearest-name-form" method="GET" action="/naiveneighbors" class="left">
-    <label for="naive-name-count">Count: </label><br>
-    <input id="naive-name-count" name="count"> <br>
-    <label for="naive-nearest-name">Star Name: </label><br>
-    <input id="naive-nearest-name" name="name"> <br> <br>
-    <button id="naive-compute-nearest-name"> Search </button>
+  <form style="display:none" id="nn-name-form" method="GET" action="/naiveneighbors" class="left">
+    <label for="nn-count">Count: </label><br>
+    <input id="nn-count" name="nn-count"> <br>
+    <label for="nn-name">Star Name: </label><br>
+    <input id="nn-name" name="nn-name"> <br> <br>
+    <button id="nn-compute-name"> Search </button>
   </form>
 </div>
 
@@ -56,28 +56,28 @@
   <label for="text">1: Select Input Method</label><br>
   <label for="text">Coordinates</label>
   <label class="switch">
-    <input id="nearest-switch" type="checkbox">
+    <input id="n-switch" type="checkbox">
     <span class="slider"></span>
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-<form id="nearest-coords-form" method="GET" action="/neighbors" class="left">
-  <label for="coords-count">Count: </label><br>
-  <input id="coords-count" name="count"> <br>
-  <label for="nearest-x">X Coordinate: </label><br>
-  <input id="nearest-x" name="x"> <br>
-  <label for="nearest-y">Y Coordinate: </label><br>
-  <input id="nearest-y" name="y"> <br>
-  <label for="nearest-z">Z Coordinate: </label><br>
-  <input id="nearest-z" name="z"> <br> <br>
-  <button id="compute-nearest-coords"> Search </button>
+<form id="n-coords-form" method="GET" action="/neighbors" class="left">
+  <label for="n-coords">Count: </label><br>
+  <input id="n-coords" name="n-coords"> <br>
+  <label for="n-x">X Coordinate: </label><br>
+  <input id="n-x" name="n-x"> <br>
+  <label for="n-y">Y Coordinate: </label><br>
+  <input id="n-y" name="n-y"> <br>
+  <label for="n-z">Z Coordinate: </label><br>
+  <input id="n-z" name="n-z"> <br> <br>
+  <button id="n-compute-coords"> Search </button>
 </form>
-<form style="display:none" id="nearest-name-form" method="GET" action="/neighbors" class="left">
-  <label for="name-count">Count: </label><br>
-  <input id="name-count" name="count"> <br>
-  <label for="nearest-name">Star Name: </label><br>
-  <input id="nearest-name" name="name"> <br> <br>
-  <button id="compute-nearest-name"> Search </button>
+<form style="display:none" id="n-name-form" method="GET" action="/neighbors" class="left">
+  <label for="n-count">Count: </label><br>
+  <input id="n-count" name="n-count"> <br>
+  <label for="n-name">Star Name: </label><br>
+  <input id="n-name" name="n-name"> <br> <br>
+  <button id="n-compute-name"> Search </button>
 </form>
 </div>
 
@@ -85,28 +85,28 @@
   <label for="text">1: Select Input Method</label><br>
   <label for="text">Coordinates</label>
   <label class="switch">
-    <input id="naive-radius-switch" type="checkbox">
+    <input id="nr-switch" type="checkbox">
     <span class="slider"></span>
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-  <form id="naive-radius-coords-form" method="GET" action="/naiveradius" class="left">
-    <label for="naive-coords-radius">Radius: </label><br>
-    <input id="naive-coords-radius" name="radius"> <br>
-    <label for="naive-radius-x">X Coordinate: </label><br>
-    <input id="naive-radius-x" name="x"> <br>
-    <label for="naive-radius-y">Y Coordinate: </label><br>
-    <input id="naive-radius-y" name="y"> <br>
-    <label for="naive-radius-z">Z Coordinate: </label><br>
-    <input id="naive-radius-z" name="z"> <br> <br>
-    <button id="naive-compute-radius-coords"> Search </button>
+  <form id="nr-coords-form" method="GET" action="/naiveradius" class="left">
+    <label for="nr-coords">Radius: </label><br>
+    <input id="nr-coords" name="nr-coords"> <br>
+    <label for="nr-x">X Coordinate: </label><br>
+    <input id="nr-x" name="nr-x"> <br>
+    <label for="nr-y">Y Coordinate: </label><br>
+    <input id="nr-y" name="nr-y"> <br>
+    <label for="nr-z">Z Coordinate: </label><br>
+    <input id="nr-z" name="nr-z"> <br> <br>
+    <button id="nr-compute-coords"> Search </button>
   </form>
-  <form style="display:none" id="naive-radius-name-form" method="GET" action="/naiveradius" class="left">
-    <label for="naive-name-radius">Radius: </label><br>
-    <input id="naive-name-radius" name="radius"> <br>
-    <label for="naive-radius-name">Star Name: </label><br>
-    <input id="naive-radius-name" name="name"> <br> <br>
-    <button id="naive-compute-radius-name"> Search </button>
+  <form style="display:none" id="nr-name-form" method="GET" action="/naiveradius" class="left">
+    <label for="nr-radius">Radius: </label><br>
+    <input id="nr-radius" name="nr-radius"> <br>
+    <label for="nr-name">Star Name: </label><br>
+    <input id="nr-name" name="nr-name"> <br> <br>
+    <button id="nr-compute-name"> Search </button>
   </form>
 </div>
 
@@ -114,28 +114,28 @@
   <label for="text">1: Select Input Method</label><br>
   <label for="text">Coordinates</label>
   <label class="switch">
-    <input id="radius-switch" type="checkbox">
+    <input id="r-switch" type="checkbox">
     <span class="slider"></span>
   </label>
   <label for="text">Star Name</label> <br><br>
   <label for="text">2: Enter Parameters</label><br>
-  <form id="radius-coords-form" method="GET" action="/radius" class="left">
-    <label for="coords-radius">Radius: </label><br>
-    <input id="coords-radius" name="radius"> <br>
-    <label for="radius-x">X Coordinate: </label><br>
-    <input id="radius-x" name="x"> <br>
-    <label for="radius-y">Y Coordinate: </label><br>
-    <input id="radius-y" name="y"> <br>
-    <label for="radius-z">Z Coordinate: </label><br>
-    <input id="radius-z" name="z"> <br> <br>
-    <button id="compute-radius-coords"> Search </button>
+  <form id="r-coords-form" method="GET" action="/radius" class="left">
+    <label for="r-coords">Radius: </label><br>
+    <input id="r-coords" name="r-coords"> <br>
+    <label for="r-x">X Coordinate: </label><br>
+    <input id="r-x" name="r-x"> <br>
+    <label for="r-y">Y Coordinate: </label><br>
+    <input id="r-y" name="r-y"> <br>
+    <label for="r-z">Z Coordinate: </label><br>
+    <input id="r-z" name="r-z"> <br> <br>
+    <button id="r-compute-coords"> Search </button>
   </form>
-  <form style="display:none" id="radius-name-form" method="GET" action="/radius" class="left">
-    <label for="name-radius">Radius: </label><br>
-    <input id="name-radius" name="radius"> <br>
-    <label for="radius-name">Star Name: </label><br>
-    <input id="radius-name" name="name"> <br> <br>
-    <button id="compute-radius-name"> Search </button>
+  <form style="display:none" id="r-name-form" method="GET" action="/radius" class="left">
+    <label for="r-radius">Radius: </label><br>
+    <input id="r-radius" name="r-radius"> <br>
+    <label for="r-name">Star Name: </label><br>
+    <input id="r-name" name="r-name"> <br> <br>
+    <button id="r-compute-name"> Search </button>
   </form>
 </div>
 

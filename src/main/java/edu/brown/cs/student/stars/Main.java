@@ -139,21 +139,20 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       NaiveRadius nr = new NaiveRadius();
       QueryParamsMap qm = req.queryMap();
-      String coordsCount = qm.value("naive-coords-radius");
-      String nameCount = qm.value("naive-name-radius");
-      String x = qm.value("naive-radius-x");
-      String y = qm.value("naive-radius-y");
-      String z = qm.value("naive-radius-z");
-      String name = qm.value("naive-radius-name");
+      String coords = qm.value("nr-coords");
+      String x = qm.value("nr-x");
+      String y = qm.value("nr-y");
+      String z = qm.value("nr-z");
+      String radius = qm.value("nr-radius");
+      String name = qm.value("nr-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = nr.run(" " + coordsCount + " " + x + " " + y + " " + z);
+        results = nr.run(coords + " " + x + " " + y + " " + z);
       } else {
-        results = nr.run(" " + nameCount + " " + "\"" + name + "\"");
+        results = nr.run(radius + " " + "\"" + name + "\"");
       }
-      System.out.println("yooo");
       String replOutput = out.toString();
       String resultsString;
       if (replOutput.contains("ERROR: ")) {
@@ -193,19 +192,19 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       Radius r = new Radius();
       QueryParamsMap qm = req.queryMap();
-      String coordsCount = qm.value("coords-radius");
-      String nameCount = qm.value("name-radius");
-      String x = qm.value("radius-x");
-      String y = qm.value("radius-y");
-      String z = qm.value("radius-z");
-      String name = qm.value("radius-name");
+      String coords = qm.value("r-coords");
+      String x = qm.value("r-x");
+      String y = qm.value("r-y");
+      String z = qm.value("r-z");
+      String radius = qm.value("r-radius");
+      String name = qm.value("r-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = r.run(" " + coordsCount + " " + x + " " + y + " " + z);
+        results = r.run(coords + " " + x + " " + y + " " + z);
       } else {
-        results = r.run(" " + nameCount + " " + "\"" + name + "\"");
+        results = r.run(radius + " " + "\"" + name + "\"");
       }
       String replOutput = out.toString();
       String resultsString;
@@ -244,21 +243,21 @@ public final class Main {
   private static class NaiveNeighborsHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) throws Exception {
-      Neighbors nn = new Neighbors();
+      NaiveNeighbors nn = new NaiveNeighbors();
       QueryParamsMap qm = req.queryMap();
-      String coordsCount = qm.value("naive-coords-count");
-      String nameCount = qm.value("naive-name-count");
-      String x = qm.value("naive-nearest-x");
-      String y = qm.value("naive-nearest-y");
-      String z = qm.value("naive-nearest-z");
-      String name = qm.value("naive-nearest-name");
+      String coords = qm.value("nn-coords");
+      String count = qm.value("nn-count");
+      String x = qm.value("nn-x");
+      String y = qm.value("nn-y");
+      String z = qm.value("nn-z");
+      String name = qm.value("nn-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = nn.run(" " + coordsCount + " " + x + " " + y + " " + z);
+        results = nn.run(coords + " " + x + " " + y + " " + z);
       } else {
-        results = nn.run(" " + nameCount + " " + "\"" + name + "\"");
+        results = nn.run(count + " " + "\"" + name + "\"");
       }
       String replOutput = out.toString();
       String resultsString;
@@ -299,22 +298,22 @@ public final class Main {
     public ModelAndView handle(Request req, Response res) throws Exception {
       Neighbors n = new Neighbors();
       QueryParamsMap qm = req.queryMap();
-      String coordsCount = qm.value("coords-count");
-      String nameCount = qm.value("name-count");
-      String x = qm.value("nearest-x");
-      String y = qm.value("nearest-y");
-      String z = qm.value("nearest-z");
-      String name = qm.value("nearest-name");
+      String coords = qm.value("n-coords");
+      String count = qm.value("n-count");
+      String x = qm.value("n-x");
+      String y = qm.value("n-y");
+      String z = qm.value("n-z");
+      String name = qm.value("n-name");
       Star[] results;
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
       if (name == null) {
-        results = n.run(" " + coordsCount + " " + x + " " + y + " " + z);
+        results = n.run(coords + " " + x + " " + y + " " + z);
       } else {
-        results = n.run(" " + nameCount + " " + "\"" + name + "\"");
+        results = n.run(count + " " + "\"" + name + "\"");
       }
       String replOutput = out.toString();
-      String resultsString;
+      String resultsString = "";
       if (replOutput.contains("ERROR: ")) {
         resultsString = replOutput;
       } else {

@@ -37,8 +37,8 @@ public class NaiveRadius implements REPLCommand {
     boolean twoParam;
     boolean fourParam;
     double radius;
-    twoParam = Pattern.matches("(\\s+[A-z0-9.-]+\\s+\"[A-z0-9\\s]+\")", argumentString);
-    fourParam = Pattern.matches("(\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
+    twoParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+\".+\")", argumentString);
+    fourParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
               argumentString);
     if (twoParam) {
       int firstQuote = argumentString.indexOf("\"");
@@ -49,7 +49,7 @@ public class NaiveRadius implements REPLCommand {
     } else {
       if (fourParam) {
         String[] arguments = argumentString.trim().split(" +");
-        radius = Double.parseDouble(Array.get(arguments, 0).toString().trim());
+        radius = Double.parseDouble(Array.get(arguments, 0).toString());
         double x = Double.parseDouble(Array.get(arguments, 1).toString());
         double y = Double.parseDouble(Array.get(arguments, 2).toString());
         double z = Double.parseDouble(Array.get(arguments, 3).toString());

@@ -41,8 +41,8 @@ public class Radius implements REPLCommand {
     boolean twoParam;
     boolean fourParam;
     double radius;
-    twoParam = Pattern.matches("(\\s+[A-z0-9.-]+\\s+\"[A-z0-9\\s]+\")", argumentString);
-    fourParam = Pattern.matches("(\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
+    twoParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+\".+\")", argumentString);
+    fourParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
         argumentString);
     if (twoParam) {
       int firstQuote = argumentString.indexOf("\"");

@@ -24,11 +24,11 @@ public class NeighborsTest {
 
   /**
    ** Tests the KDTree implementation against the naive implementation.
-
+   */
   @Test
   public void testAgainstNaive() {
     boolean correct;
-    for (int i = 0; i < Constants.THIRTY; i++) {
+    for (int i = 0; i < Constants.SIXTY; i++) {
       StarInput input = new StarInput();
       Star.clearStarData();
       for (Star star : input.getStars()) {
@@ -51,19 +51,9 @@ public class NeighborsTest {
           correct = false;
         }
       }
-      if (!correct) {
-        for (int k = 0; k < input.getStars().size(); k++) {
-          System.out.println(input.getStars().get(k).toString());
-        }
-        System.out.println("count: " + input.getCount());
-        System.out.println("x: " + input.getX());
-        System.out.println("y: " + input.getY());
-        System.out.println("z: " + input.getZ());
-      }
       assertTrue(correct);
     }
   }
-   */
 
   /**
    * Resets the NaiveNeighbors object.
@@ -238,15 +228,13 @@ public class NeighborsTest {
 
   /**
    ** Tests calling one neighbor.
-
+   */
   @Test
   public void testOneNeighbor() throws IOException {
     reset();
     stars.run(" data/stars/nineteen-star.csv");
     Star[] output = neighbors.run(" 1 128.72790843303667 -55.20516045528934 140.81526135482198");
-    System.out.println("yooooo" + ((Star) Star.getStarTree().getRight().get().getNode().get()).getStarID());
     assertEquals(output.length, 1);
     assertEquals(output[0].getStarID(), "18");
   }
-   */
 }

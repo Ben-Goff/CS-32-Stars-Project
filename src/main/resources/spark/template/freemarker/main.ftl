@@ -4,7 +4,6 @@
     <meta name="Description" content="KD Trees, Radius, Nearest Neighbors, Search, CS32, Brown University, Stars">
     <meta charset="utf-8">
     <title>${title}</title>
-    <link rel="icon" type="image/png" href="favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and

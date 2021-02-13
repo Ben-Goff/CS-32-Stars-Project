@@ -36,12 +36,11 @@ public class NaiveNeighbors implements REPLCommand {
   @Override
   public Star[] run(String argumentString) {
     try {
-      String[] closeStars;
       boolean twoParam;
       boolean fourParam;
       int count;
-      twoParam = Pattern.matches("(\\s+[A-z0-9-.]+\\s+\"[A-z0-9-.\\s]+\")", argumentString);
-      fourParam = Pattern.matches("(\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
+      twoParam = Pattern.matches("(\\s*[A-z0-9-.]+\\s+\".+\")", argumentString);
+      fourParam = Pattern.matches("(\\s*[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
           argumentString);
       if (twoParam) {
         int firstQuote = argumentString.indexOf("\"");

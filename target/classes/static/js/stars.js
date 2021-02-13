@@ -1,8 +1,8 @@
 // Process queries from nearest neighbor
 
 function swapNearestOptions () {
-    const coordsVisibility = document.getElementById('nearest-coords-form')
-    const nameVisibility = document.getElementById('nearest-name-form')
+    const coordsVisibility = document.getElementById('n-coords-form')
+    const nameVisibility = document.getElementById('n-name-form')
     if (coordsVisibility.style.display === "none") {
         nameVisibility.style.display = "none"
         coordsVisibility.style.display = "block"
@@ -12,11 +12,11 @@ function swapNearestOptions () {
     }
 }
 
-document.getElementById("nearest-switch").addEventListener("change", swapNearestOptions)
+document.getElementById("n-switch").addEventListener("change", swapNearestOptions)
 
 function swapNaiveNearestOptions () {
-    const coordsVisibility = document.getElementById('naive-nearest-coords-form')
-    const nameVisibility = document.getElementById('naive-nearest-name-form')
+    const coordsVisibility = document.getElementById('nn-coords-form')
+    const nameVisibility = document.getElementById('nn-name-form')
     if (coordsVisibility.style.display === "none") {
         nameVisibility.style.display = "none"
         coordsVisibility.style.display = "block"
@@ -26,11 +26,11 @@ function swapNaiveNearestOptions () {
     }
 }
 
-document.getElementById("naive-nearest-switch").addEventListener("change", swapNaiveNearestOptions)
+document.getElementById("nn-switch").addEventListener("change", swapNaiveNearestOptions)
 
 function swapRadiusOptions () {
-    const coordsVisibility = document.getElementById('radius-coords-form')
-    const nameVisibility = document.getElementById('radius-name-form')
+    const coordsVisibility = document.getElementById('r-coords-form')
+    const nameVisibility = document.getElementById('r-name-form')
     if (coordsVisibility.style.display === "none") {
         nameVisibility.style.display = "none"
         coordsVisibility.style.display = "block"
@@ -40,11 +40,11 @@ function swapRadiusOptions () {
     }
 }
 
-document.getElementById("radius-switch").addEventListener("change", swapRadiusOptions)
+document.getElementById("r-switch").addEventListener("change", swapRadiusOptions)
 
 function swapNaiveRadiusOptions () {
-    const coordsVisibility = document.getElementById('naive-radius-coords-form')
-    const nameVisibility = document.getElementById('naive-radius-name-form')
+    const coordsVisibility = document.getElementById('nr-coords-form')
+    const nameVisibility = document.getElementById('nr-name-form')
     if (coordsVisibility.style.display === "none") {
         nameVisibility.style.display = "none"
         coordsVisibility.style.display = "block"
@@ -54,7 +54,7 @@ function swapNaiveRadiusOptions () {
     }
 }
 
-document.getElementById("naive-radius-switch").addEventListener("change", swapNaiveRadiusOptions)
+document.getElementById("nr-switch").addEventListener("change", swapNaiveRadiusOptions)
 
 function openTab(tabName) {
     const tabs = document.getElementsByClassName("tab");

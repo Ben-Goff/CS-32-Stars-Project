@@ -54,8 +54,8 @@ public class Neighbors implements REPLCommand {
       boolean twoParam;
       boolean fourParam;
       int count;
-      twoParam = Pattern.matches("(\\s+[A-z0-9]+\\s+\"[A-z0-9-.'_\\s]+\")", argumentString);
-      fourParam = Pattern.matches("(\\s+[A-z0-9]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
+      twoParam = Pattern.matches("(\\s*[A-z0-9]+\\s+\".+\")", argumentString);
+      fourParam = Pattern.matches("(\\s*[A-z0-9]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
           argumentString);
       if (twoParam) {
         int firstQuote = argumentString.indexOf("\"");

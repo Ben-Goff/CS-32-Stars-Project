@@ -24,11 +24,11 @@ public class RadiusTest {
 
   /**
    * * Tests the KDTree implementation against the naive implementation.
-
+   */
   @Test
   public void testAgainstNaive() {
     boolean correct;
-    for (int i = 0; i < Constants.THIRTY; i++) {
+    for (int i = 0; i < Constants.SIXTY; i++) {
       StarInput input = new StarInput();
       Star.clearStarData();
       for (Star star : input.getStars()) {
@@ -52,7 +52,7 @@ public class RadiusTest {
       assertTrue(correct);
     }
   }
-   */
+
   /**
    * Resets the Radius object.
    */

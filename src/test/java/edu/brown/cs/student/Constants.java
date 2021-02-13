@@ -15,6 +15,7 @@ public abstract class Constants {
   public static final int NINE = 9;
   public static final int TEN = 10;
   public static final int THIRTY = 30;
+  public static final int SIXTY = 60;
   public static final int ONEONENINESIXONESEVEN = 119617;
   public static final double ALMOST_ZERO = 0.001;
   public static final double TWENTY_TWO = 22.0;
