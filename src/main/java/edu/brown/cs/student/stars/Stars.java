@@ -35,7 +35,8 @@ public class Stars implements REPLCommand {
    */
   @Override
   public Star[] run(String argumentString) throws IOException {
-    boolean isFile = Pattern.matches("(\\s+[A-z0-9/-]+.csv\\s*)", argumentString);
+    //Checks that the command is valid and what form it takes (coordinates/star name)
+    boolean isFile = Pattern.matches("(\\s*[A-z0-9/-]+.csv\\s*)", argumentString);
     if (isFile) {
       String filename = argumentString.trim();
       loadData(filename);
@@ -66,6 +67,7 @@ public class Stars implements REPLCommand {
       double y;
       double z;
       while (lineData.isPresent()) {
+        //grabs all relevant data and adds it to the star data
         optData = lineData.get();
         iD = Array.get(optData, 0).toString();
         name = Array.get(optData, 1).toString();
@@ -76,6 +78,7 @@ public class Stars implements REPLCommand {
         Star.addStarData(lineStar);
         lineData = stars.parseLine();
       }
+      //builds KDTree from the star data Vector
       Star.setStarTree();
       int starCount = Star.getStarData().size();
       System.out.println("Read " + starCount + " stars from " + filename);

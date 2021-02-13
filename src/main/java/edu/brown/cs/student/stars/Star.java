@@ -122,18 +122,38 @@ public class Star implements Coordinate {
     return properName;
   }
 
+
+  /**
+   * Returns the star coordinates as an array.
+   * @return ArrayList<Double>
+   */
   public ArrayList<Double> getCoordinate() {
     return new ArrayList<>(Arrays.asList(this.x, this.y, this.z));
   }
 
+  /**
+   * Returns the star coordinates at the relevant dimension l layers down a kd tree,
+   * with the root being at level 0.
+   * @param l layer of kd tree
+   * @return ArrayList<Double>
+   */
   public double getCoordinate(int l) {
     return this.getCoordinate().get(l % 3);
   }
 
+  /**
+   * Returns the number of dimensions in which stars live (3).
+   * @return int
+   */
   public int getDimension() {
     return 3;
   };
 
+
+  /**
+   * Represents stars as a string for data display / debugging.
+   * @return String
+   */
   @Override
   public String toString() {
     return "Star{"
@@ -157,7 +177,8 @@ public class Star implements Coordinate {
   }
 
   /**
-   * hashCode for Stars objects.
+   * hashCode for Stars objects. May be able to be improved; not too experienced.
+   * Initially had some issues, but this seems to work.
    * @return int
    */
   @Override

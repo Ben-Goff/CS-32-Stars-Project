@@ -37,8 +37,9 @@ public class NaiveRadius implements REPLCommand {
     boolean twoParam;
     boolean fourParam;
     double radius;
-    twoParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+\".+\")", argumentString);
-    fourParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
+    //Checks that the command is valid and what form it takes (coordinates/star name)
+    twoParam = Pattern.matches("(\\s*[A-z0-9.]+\\s+\".+\")", argumentString);
+    fourParam = Pattern.matches("(\\s*[A-z0-9.]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
               argumentString);
     if (twoParam) {
       int firstQuote = argumentString.indexOf("\"");
@@ -87,6 +88,7 @@ public class NaiveRadius implements REPLCommand {
     try {
       Star coordinate = Star.getStar(name);
       if (coordinate == null) {
+        //Throws error if inputted start is not in loaded star list
         throw new RuntimeException("ERROR: Star not found");
       } else {
         Star finalCoordinate = coordinate;

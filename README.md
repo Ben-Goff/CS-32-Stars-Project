@@ -35,6 +35,7 @@ HOW TO RUN TESTS WRITTEN BY HAND:
 - JUnit tests run with 'mvn package'
 - Part 1 system tests run with 'python cs32-test tests/student/stars/stars1/*.test'
 - Part 2 system tests run with 'python cs32-test tests/student/stars/stars2/*.test'
+- Part 3 system tests continued in Part 2 folder
 
 HOW TO BUILD/RUN MY PROGRAM:
 - Standard 'mvn package' followed by './run'

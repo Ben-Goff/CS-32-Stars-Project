@@ -39,8 +39,9 @@ public class NaiveNeighbors implements REPLCommand {
       boolean twoParam;
       boolean fourParam;
       int count;
-      twoParam = Pattern.matches("(\\s*[A-z0-9-.]+\\s+\".+\")", argumentString);
-      fourParam = Pattern.matches("(\\s*[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
+      //Checks that the command is valid and what form it takes (coordinates/star name)
+      twoParam = Pattern.matches("(\\s*[A-z0-9]+\\s+\".+\")", argumentString);
+      fourParam = Pattern.matches("(\\s*[A-z0-9]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
           argumentString);
       if (twoParam) {
         int firstQuote = argumentString.indexOf("\"");
@@ -110,6 +111,7 @@ public class NaiveNeighbors implements REPLCommand {
         }
       }
       if (coordinate == null) {
+        //Throw error if inputted star is not in the list of loaded stars
         throw new RuntimeException("ERROR: Star not found");
       } else {
         TreeMap<Double, ArrayList<Star>> starDistance = new TreeMap();
@@ -125,7 +127,8 @@ public class NaiveNeighbors implements REPLCommand {
             starDistance.get(currentDistance).add(currentStar);
           }
         }
-        return getCloseStars(Math.min(k, data.size() - 1), (TreeMap<Double, ArrayList<Star>>) starDistance);
+        return getCloseStars(Math.min(k, data.size() - 1),
+            (TreeMap<Double, ArrayList<Star>>) starDistance);
       }
     } catch (Exception e) {
       System.out.println(e.getMessage());

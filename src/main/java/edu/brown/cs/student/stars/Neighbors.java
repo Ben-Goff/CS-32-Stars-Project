@@ -54,6 +54,7 @@ public class Neighbors implements REPLCommand {
       boolean twoParam;
       boolean fourParam;
       int count;
+      //Checks that the command is valid and what form it takes (coordinates/star name)
       twoParam = Pattern.matches("(\\s*[A-z0-9]+\\s+\".+\")", argumentString);
       fourParam = Pattern.matches("(\\s*[A-z0-9]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+\\s+[A-z0-9-.]+)",
           argumentString);
@@ -64,6 +65,7 @@ public class Neighbors implements REPLCommand {
         String name = argumentString.substring(firstQuote + 1, secondQuote);
         Star target = Star.getStar(name);
         //Queue cleared and designated to sort by distance to target coordinate
+        //Negative so that the farthest stars (those to be kicked off) are first
         currentNearest = new PriorityQueue<>(Comparator.comparingDouble(
             s -> -1 * s.distance(target.getX(), target.getY(), target.getZ())));
         currentNearest.clear();
@@ -77,6 +79,7 @@ public class Neighbors implements REPLCommand {
           double y = Double.parseDouble(Array.get(arguments, 2).toString());
           double z = Double.parseDouble(Array.get(arguments, 3).toString());
           //Queue cleared and designated to sort by distance to target coordinate
+          //Negative so that the farthest stars (those to be kicked off) are first
           currentNearest = new PriorityQueue<>(Comparator
               .comparingDouble(s -> -1 * s.distance(x, y, z)));
           currentNearest.clear();
@@ -140,6 +143,12 @@ public class Neighbors implements REPLCommand {
     if (data.getNode().isPresent() && count != 0) {
       Star current = (Star) data.getNode().get();
       if (currentNearest.size() + currentFringe.size() < count) {
+        /*
+        The fringe is always loaded first, as the nearest is limited to count - 1
+        Fringe contains the stars of the farthest distance that may still contain a near neighbor
+        is always maintained at size > 0, but acts as only one slot in the queue it is the real
+        head of the priority queue, ties are decided randomly from within it after the fact
+        */
         if (currentFringe.size() == 0
             || current.distance(ex, why, zee) == currentFringe.get(0).distance(ex, why, zee)) {
           currentFringe.add(current);
@@ -148,6 +157,7 @@ public class Neighbors implements REPLCommand {
             for (Star star : currentFringe) {
               currentNearest.add(star);
             }
+            //When something is kicked off of the fringe, a new item must take its place
             currentFringe.clear();
             currentFringe.add(current);
           } else {
@@ -170,10 +180,13 @@ public class Neighbors implements REPLCommand {
           }
         }
       }
+      //switch branches are mostly identical
+      //there is one for each dimension that may be split on, denoted by 0, 1, 2 for x, y, z
       switch (index) {
         case 0:
           if (currentFringe.get(0).distance(ex, why, zee) > Math.abs(current.getX() - ex)
               || currentFringe.size() + currentNearest.size() < count) {
+            //goes down both sides if we haven't hit the quota yet
             if (data.getLeft().isPresent()) {
               neighborSearcher(data.getLeft().get(), ex, why, zee, layer++, count);
             }
@@ -181,6 +194,7 @@ public class Neighbors implements REPLCommand {
               neighborSearcher(data.getRight().get(), ex, why, zee, layer++, count);
             }
           } else {
+            //if we have, it goes to the side closer to the current side
             if (current.getX() <= ex) {
               if (data.getRight().isPresent()) {
                 neighborSearcher(data.getRight().get(), ex, why, zee, layer++, count);

@@ -41,8 +41,9 @@ public class Radius implements REPLCommand {
     boolean twoParam;
     boolean fourParam;
     double radius;
-    twoParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+\".+\")", argumentString);
-    fourParam = Pattern.matches("(\\s*[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
+    //Checks that the command is valid and what form it takes (coordinates/star name)
+    twoParam = Pattern.matches("(\\s*[A-z0-9.]+\\s+\".+\")", argumentString);
+    fourParam = Pattern.matches("(\\s*[A-z0-9.]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+\\s+[A-z0-9.-]+)",
         argumentString);
     if (twoParam) {
       int firstQuote = argumentString.indexOf("\"");
@@ -79,18 +80,22 @@ public class Radius implements REPLCommand {
     ArrayList<Star> withinRadiusLeft = new ArrayList<>();
     ArrayList<Star> withinRadiusRight = new ArrayList<>();
     if (starTree.getNode().isEmpty()) {
+      //if theres nothing to search through, return nothing
       return new Star[0];
     } else {
       Star node = (Star) starTree.getNode().get();
+      //move down the branches that could contain the targets sphere of interest
       if (ex - node.getX() < r) {
         withinRadiusLeft = radius(starTree.getLeft(), r, ex, why, zee, 1);
       }
       if (node.getX() - ex <= r) {
         withinRadiusRight = radius(starTree.getRight(), r, ex, why, zee, 1);
       }
+      //elements are added one at a time, as the branches are iterated down
       if ((node.distance(ex, why, zee) <= r)) {
         withinRadiusRight.add(node);
       }
+      //Streams used to filter data
       return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
           .sorted(Comparator.comparingDouble(s -> s.distance(ex, why, zee))).toArray(Star[]::new);
     }
@@ -107,6 +112,7 @@ public class Radius implements REPLCommand {
     try {
       Star target = Star.getStar(name);
       if (target == null) {
+        //throw error is target start not in list of loaded stars
         throw new RuntimeException("ERROR: Star not found");
       }
       ArrayList<Star> withinRadiusLeft = new ArrayList<>();
@@ -114,6 +120,7 @@ public class Radius implements REPLCommand {
       if (starTree.getNode().isEmpty()) {
         return new Star[0];
       } else {
+        //same process as above, but adapted for a star Object
         Star node = (Star) starTree.getNode().get();
         if (target.getX() - node.getX() < r) {
           withinRadiusLeft = radius(starTree.getLeft(), r,
@@ -126,6 +133,7 @@ public class Radius implements REPLCommand {
         if ((node.distance(target.getX(), target.getY(), target.getZ()) <= r)) {
           withinRadiusRight.add(node);
         }
+        //Streams used to filter data
         return Stream.of(withinRadiusLeft, withinRadiusRight).flatMap(los -> los.stream())
             .filter(star -> !star.getProperName().equals(name)).toArray(Star[]::new);
       }
@@ -148,6 +156,8 @@ public class Radius implements REPLCommand {
    */
   public static ArrayList<Star> radius(Optional<KDTree> tree, double r,
                                        double ex, double why, double zee, int l) {
+    //this function introduces a layer parameter, so that the radius function two above
+    //can work without one using 0 as a standard value
     int layer = l;
     int dimension = 3;
     int index = layer % dimension;
@@ -193,6 +203,7 @@ public class Radius implements REPLCommand {
           break;
         default:
       }
+      //Streams used to filter data
       return new ArrayList<Star>(Stream.of(withinRadiusLeft, withinRadiusRight)
           .flatMap(los -> los.stream()).collect(Collectors.toList()));
     }

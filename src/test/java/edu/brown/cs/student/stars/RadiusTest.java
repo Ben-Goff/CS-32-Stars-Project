@@ -1,19 +1,12 @@
 package edu.brown.cs.student.stars;
 
 import edu.brown.cs.student.Constants;
-import edu.brown.cs.student.util.KDTree;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import static edu.brown.cs.student.stars.Neighbors.resetCurrentFringe;
-import static edu.brown.cs.student.stars.Neighbors.setCurrentNearest;
-import static edu.brown.cs.student.stars.NaiveRadius.naiveRadius;
 import static edu.brown.cs.student.stars.Radius.radius;
 import static org.junit.Assert.assertTrue;
 
@@ -35,11 +28,13 @@ public class RadiusTest {
         Star.addStarData(star);
       }
       Star.setStarTree();
-      Star[] naive = naiveRadius.run(" " + input.getCount() + " " + input.getX() + " " + input.getY() + " " + input.getZ());
+      Star[] naive = naiveRadius.run(" " + input.getCount() + " " + input.getX()
+          + " " + input.getY() + " " + input.getZ());
       Double[] naiveStars =
           Arrays.stream(naive).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);
-      Star[] smart = radius.run(" " + input.getCount() + " " + input.getX() + " " + input.getY() + " " + input.getZ());
+      Star[] smart = radius.run(" " + input.getCount() + " " + input.getX()
+          + " " + input.getY() + " " + input.getZ());
       Double[] smartStars =
           Arrays.stream(smart).map(s -> s.distance(input.getX(), input.getY(), input.getZ()))
               .sorted().toArray(Double[]::new);

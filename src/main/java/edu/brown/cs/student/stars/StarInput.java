@@ -69,7 +69,8 @@ public class StarInput {
   }
 
   /**
-   * Creates a new StarInput with all fields necessary for Stars commands.
+   * Creates a new, randomized StarInput with all fields necessary for Stars commands.
+   * Useful for property based testing.
    */
   public StarInput() {
     int starCount = ThreadLocalRandom.current().nextInt(2, Constants.THIRTY);

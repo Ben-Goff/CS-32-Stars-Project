@@ -1,7 +1,6 @@
 package edu.brown.cs.student.util;
 
 import edu.brown.cs.student.stars.Star;
-
 import java.io.IOException;
 
 public interface REPLCommand {

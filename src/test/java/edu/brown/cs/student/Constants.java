@@ -29,4 +29,7 @@ public abstract class Constants {
   public static final double CYNTHA_X = 671.91057;
   public static final double CYNTHA_Y = 138.81144;
   public static final double CYNTHA_Z = -249.12044;
+  public static final double NINETEEN_X = 128.72790843303667;
+  public static final double NINETEEN_Y = -55.20516045528934;
+  public static final double NINETEEN_Z = 140.81526135482198;
 }

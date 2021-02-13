@@ -110,7 +110,7 @@ public final class Main {
       String path = qm.value("path");
       java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
       System.setOut(new java.io.PrintStream(out));
-      s.run(" " + path);
+      s.run(path);
       String resultsString = out.toString();
       Map<String, String> variables = ImmutableMap.of("title", "Loaded", "results", resultsString);
       return new ModelAndView(variables, "query.ftl");
@@ -156,8 +156,10 @@ public final class Main {
       String replOutput = out.toString();
       String resultsString;
       if (replOutput.contains("ERROR: ")) {
+        //Print error if inputs are malformed
         resultsString = replOutput;
       } else {
+        //Otherwise creates table to put in GUI
         resultsString = "<table>"
             + "<tr>"
             + "<th>Star ID</th>"
@@ -208,9 +210,11 @@ public final class Main {
       }
       String replOutput = out.toString();
       String resultsString;
+      //Print error if inputs are malformed
       if (replOutput.contains("ERROR: ")) {
         resultsString = replOutput;
       } else {
+        //Otherwise creates table to put in GUI
         resultsString = "<table>"
             + "<tr>"
             + "<th>Star ID</th>"
@@ -262,8 +266,10 @@ public final class Main {
       String replOutput = out.toString();
       String resultsString;
       if (replOutput.contains("ERROR: ")) {
+        //Print error if inputs are malformed
         resultsString = replOutput;
       } else {
+        //Otherwise creates table to put in GUI
         resultsString = "<table>"
             + "<tr>"
             + "<th>Star ID</th>"
@@ -315,8 +321,10 @@ public final class Main {
       String replOutput = out.toString();
       String resultsString = "";
       if (replOutput.contains("ERROR: ")) {
+        //Print error if inputs are malformed
         resultsString = replOutput;
       } else {
+        //Otherwise creates table to put in GUI
         resultsString = "<table>"
             + "<tr>"
             + "<th>Star ID</th>"
